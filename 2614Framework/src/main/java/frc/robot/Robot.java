@@ -79,7 +79,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    CustomTalonFX motor1 = new CustomTalonFX(4);
   }
 
   /** This function is called periodically during operator control. */

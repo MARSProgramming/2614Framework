@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveAtPath;
+import frc.robot.commands.ResetDrivePose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class TestAutoPlay extends SequentialCommandGroup{
@@ -18,20 +19,23 @@ public class TestAutoPlay extends SequentialCommandGroup{
         mDrivetrain = drivetrain;
         addRequirements(drivetrain);
 
-        Trajectory testTrajectory = new Trajectory();
-        openTrajectoryFile("testpath.wpilib", testTrajectory);
+        Trajectory testTrajectory = openTrajectoryFile("testpath.wpilib.json");
         addCommands(
+            new ResetDrivePose(mDrivetrain, 7.478, 1.736, 272.5),
             new DriveAtPath(mDrivetrain, testTrajectory, new Rotation2d(0.0))
         );
     }
 
-    public void openTrajectoryFile(String name, Trajectory trajectory){
+    public Trajectory openTrajectoryFile(String name){
         try{
-            Path path = Filesystem.getDeployDirectory().toPath().resolve(name);
-            trajectory = TrajectoryUtil.fromPathweaverJson(path);
+            Trajectory t = new Trajectory();
+            Path path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + name);
+            t = TrajectoryUtil.fromPathweaverJson(path);
+            return t;
         }
         catch(IOException ex){
             DriverStation.reportError("Unable to open trajectory: " + name, ex.getStackTrace());
+            return null;
         }
     }
 }

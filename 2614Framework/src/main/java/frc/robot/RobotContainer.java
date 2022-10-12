@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.auto.plays.TestAutoPlay;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
@@ -53,11 +54,13 @@ public class RobotContainer {
     new Button(mPilot::getYButton)
             // No requirements because we don't need to interrupt anything
             .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
+    System.out.println("Teleop Bindings Configured");
   }
 
   public void configureTestBindings(){
     new Button(mPilot::getYButton)
             .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
+    System.out.println("Test Bindings Configured");
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -65,8 +68,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return new TestAutoPlay(mDrivetrainSubsystem);
   }
 
   private static double deadband(double value, double deadband) {
