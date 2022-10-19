@@ -19,9 +19,9 @@ public class TestAutoPlay extends SequentialCommandGroup{
         mDrivetrain = drivetrain;
         addRequirements(drivetrain);
 
-        Trajectory testTrajectory = openTrajectoryFile("testpath.wpilib.json");
+        Trajectory testTrajectory = openTrajectoryFile("test5BallPath.wpilib.json");
         addCommands(
-            new ResetDrivePose(mDrivetrain, 7.478, 1.736, 272.5),
+            new ResetDrivePose(mDrivetrain, 7.69, 1.94, 272.5),
             new DriveAtPath(mDrivetrain, testTrajectory, new Rotation2d(0.0))
         );
     }
@@ -29,7 +29,7 @@ public class TestAutoPlay extends SequentialCommandGroup{
     public Trajectory openTrajectoryFile(String name){
         try{
             Trajectory t = new Trajectory();
-            Path path = Filesystem.getDeployDirectory().toPath().resolve("paths/output/" + name);
+            Path path = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/" + name);
             t = TrajectoryUtil.fromPathweaverJson(path);
             return t;
         }

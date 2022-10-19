@@ -23,10 +23,10 @@ import static frc.robot.Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
+import static frc.robot.Constants.kDriveCANivore;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
-import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
@@ -134,8 +134,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
             Mk4SwerveModuleHelper.GearRatio.L3,
             // This is the ID of the drive motor
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
+            kDriveCANivore,
             // This is the ID of the steer motor
             FRONT_LEFT_MODULE_STEER_MOTOR,
+            kDriveCANivore,
             // This is the ID of the steer encoder
             FRONT_LEFT_MODULE_STEER_ENCODER,
             // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
@@ -149,7 +151,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(2, 0),
             Mk4SwerveModuleHelper.GearRatio.L3,
             FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+            kDriveCANivore,
             FRONT_RIGHT_MODULE_STEER_MOTOR,
+            kDriveCANivore,
             FRONT_RIGHT_MODULE_STEER_ENCODER,
             FRONT_RIGHT_MODULE_STEER_OFFSET
     );
@@ -160,7 +164,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(4, 0),
             Mk4SwerveModuleHelper.GearRatio.L3,
             BACK_LEFT_MODULE_DRIVE_MOTOR,
+            kDriveCANivore,
             BACK_LEFT_MODULE_STEER_MOTOR,
+            kDriveCANivore,
             BACK_LEFT_MODULE_STEER_ENCODER,
             BACK_LEFT_MODULE_STEER_OFFSET
     );
@@ -171,7 +177,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(6, 0),
             Mk4SwerveModuleHelper.GearRatio.L3,
             BACK_RIGHT_MODULE_DRIVE_MOTOR,
+            kDriveCANivore,
             BACK_RIGHT_MODULE_STEER_MOTOR,
+            kDriveCANivore,
             BACK_RIGHT_MODULE_STEER_ENCODER,
             BACK_RIGHT_MODULE_STEER_OFFSET
     );

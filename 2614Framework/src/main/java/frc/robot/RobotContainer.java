@@ -5,10 +5,13 @@
 package frc.robot;
 
 
+import java.util.HashMap;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.auto.plays.TestAutoPlay;
 import frc.robot.commands.DefaultDriveCommand;
@@ -26,6 +29,7 @@ public class RobotContainer {
 
   private final XboxController mPilot = new XboxController(0);
 
+  private HashMap<String, Pose2d> mPointPositionMap;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -41,6 +45,9 @@ public class RobotContainer {
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
+    
+    mPointPositionMap = new HashMap<>();
+    mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
   }
 
   /**
@@ -52,6 +59,9 @@ public class RobotContainer {
   public void configureTeleopBindings() {
     // Back button zeros the gyroscope
     new Button(mPilot::getYButton)
+            // No requirements because we don't need to interrupt anything
+            .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
+    new Button()
             // No requirements because we don't need to interrupt anything
             .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
     System.out.println("Teleop Bindings Configured");

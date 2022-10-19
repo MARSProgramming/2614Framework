@@ -31,6 +31,7 @@ public final class Constants {
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5334; // FIXME Measure and set wheelbase
 
     public static final int DRIVETRAIN_PIGEON_ID = 31; // FIXME Set Pigeon ID
+    public static final String kDriveCANivore = "canivore";
 
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 15; // FIXME Set front left module drive motor ID
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 5; // FIXME Set front left module steer motor ID
@@ -64,5 +65,9 @@ public final class Constants {
         public static final double holonomicOkD = 0.0;
         public static final double holonomicOMaxVelocity = 6.0;
         public static final double holonomicOMaxAcceleration = 15.0;
+    }
+
+    public static final class CustomXboxController{
+        public static final double kTriggerThreshold = 0.6;
     }
 }
