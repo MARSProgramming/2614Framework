@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.auto.plays.TestAutoPlay;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.util.CustomXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,7 +28,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
 
-  private final XboxController mPilot = new XboxController(0);
+  private final CustomXboxController mPilot = new CustomXboxController(0);
 
   private HashMap<String, Pose2d> mPointPositionMap;
   /**
@@ -59,9 +60,6 @@ public class RobotContainer {
   public void configureTeleopBindings() {
     // Back button zeros the gyroscope
     new Button(mPilot::getYButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
-    new Button()
             // No requirements because we don't need to interrupt anything
             .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
     System.out.println("Teleop Bindings Configured");

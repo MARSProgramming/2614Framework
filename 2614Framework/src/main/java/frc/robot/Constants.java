@@ -67,7 +67,7 @@ public final class Constants {
         public static final double holonomicOMaxAcceleration = 15.0;
     }
 
-    public static final class CustomXboxController{
+    public static final class CustomXboxControllerConstants{
         public static final double kTriggerThreshold = 0.6;
     }
 }
