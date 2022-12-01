@@ -41,8 +41,6 @@ public class DriveAtPath extends CommandBase {
     @Override
     public void execute() {
         mDrivetrainSubsystem.drive(mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()), mEndRotation));
-        SmartDashboard.putNumber("X", mTrajectory.sample(mTimer.get()).poseMeters.getX());
-        SmartDashboard.putNumber("Y", mTrajectory.sample(mTimer.get()).poseMeters.getY());
     }
 
     // Called once the command ends or is interrupted.

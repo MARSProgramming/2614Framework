@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.auto.plays.TestAutoPlay;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DriveSnapRotation;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.CustomXboxController;
 
@@ -40,11 +41,13 @@ public class RobotContainer {
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
     // Right stick X axis -> rotation
-    mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    mDrivetrainSubsystem.setDefaultCommand(new DriveSnapRotation(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getRightY()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+            mDrivetrainSubsystem.getSnapController()
     ));
     
     mPointPositionMap = new HashMap<>();

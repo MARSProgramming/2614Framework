@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -30,7 +28,7 @@ public class DriveSnapRotation extends CommandBase {
         this.m_rotationYSupplier = rotationYSupplier;
         mSnapController = snapController;
 
-        mSnapController.setGoal(new TrapezoidProfile.State(Math.toRadians(0), 0.0));
+        mSnapController.setGoal(new TrapezoidProfile.State(Math.toRadians(Math.atan2(rotationYSupplier.getAsDouble(), rotationXSupplier.getAsDouble())), 0.0));
         addRequirements(drivetrainSubsystem);
     }
 

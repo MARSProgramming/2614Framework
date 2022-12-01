@@ -27,7 +27,6 @@ import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
-import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
@@ -43,6 +42,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -96,6 +96,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public double getPigeonAngle(){
         return Math.toRadians(m_pigeon.getYaw());
+  }
+  public ProfiledPIDController getSnapController(){
+          return mSnapController;
   }
   private final SwerveDriveOdometry mOdometry;
   // FIXME Uncomment if you are using a NavX
@@ -247,8 +250,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
-    //SmartDashboard.putNumber("X", this.getPose().getX());
-    //SmartDashboard.putNumber("Y", this.getPose().getY());
+    SmartDashboard.putNumber("X", this.getPose().getX());
+    SmartDashboard.putNumber("Y", this.getPose().getY());
+    SmartDashboard.putNumber("rot", this.getPose().getRotation().getDegrees());
 }
 
   public Pose2d getPose(){
