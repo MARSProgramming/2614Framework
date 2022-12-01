@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -67,6 +69,14 @@ public final class Constants {
         public static final double holonomicOMaxAcceleration = 15.0;
     }
 
+    public static final class Drive{
+        public static final class SnapConstants{
+            public static final double kP = 0.1;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Auto.holonomicOMaxVelocity, Auto.holonomicOMaxAcceleration);
+        }
+    }
     public static final class CustomXboxControllerConstants{
         public static final double kTriggerThreshold = 0.6;
     }
