@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -19,15 +18,26 @@ public class DriveAtPath extends CommandBase {
     private HolonomicDriveController mController;
     private Timer mTimer;
     private Rotation2d mEndRotation;
+    private double timeout;
 
     public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
-        mController = new HolonomicDriveController(new PIDController(Constants.Auto.holonomicXkP, Constants.Auto.holonomicXkI, Constants.Auto.holonomicXkD), new PIDController(Constants.Auto.holonomicYkP, Constants.Auto.holonomicYkI, Constants.Auto.holonomicYkD), new ProfiledPIDController(Constants.Auto.holonomicOkP, Constants.Auto.holonomicOkI, Constants.Auto.holonomicOkD, new TrapezoidProfile.Constraints(Constants.Auto.holonomicOMaxVelocity, Constants.Auto.holonomicOMaxAcceleration)));
+        mController = new HolonomicDriveController(new PIDController((double) Constants.AutoConstants.get("holonomicXkP"), (double) Constants.AutoConstants.get("holonomicXkI"), (double) Constants.AutoConstants.get("holonomicXkD")), new PIDController((double) Constants.AutoConstants.get("holonomicYkP"), (double) Constants.AutoConstants.get("holonomicYkI"), (double) Constants.AutoConstants.get("holonomicYkD")), new ProfiledPIDController((double) Constants.AutoConstants.get("holonomicOkP"), (double) Constants.AutoConstants.get("holonomicOkI"), (double) Constants.AutoConstants.get("holonomicOkD"), new TrapezoidProfile.Constraints((double) Constants.AutoConstants.get("holonomicOMaxVelocity"), (double) Constants.AutoConstants.get("holonomicOMaxAcceleration"))));
         mTimer = new Timer();
         mEndRotation = rotation;
+        timeout = 1000.0;
         
-        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(subsystem);
+    }
+    public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation, double time) {
+        mTrajectory = traj;
+        mDrivetrainSubsystem = subsystem;
+        mController = new HolonomicDriveController(new PIDController((double) Constants.AutoConstants.get("holonomicXkP"), (double) Constants.AutoConstants.get("holonomicXkI"), (double) Constants.AutoConstants.get("holonomicXkD")), new PIDController((double) Constants.AutoConstants.get("holonomicYkP"), (double) Constants.AutoConstants.get("holonomicYkI"), (double) Constants.AutoConstants.get("holonomicYkD")), new ProfiledPIDController((double) Constants.AutoConstants.get("holonomicOkP"), (double) Constants.AutoConstants.get("holonomicOkI"), (double) Constants.AutoConstants.get("holonomicOkD"), new TrapezoidProfile.Constraints((double) Constants.AutoConstants.get("holonomicOMaxVelocity"), (double) Constants.AutoConstants.get("holonomicOMaxAcceleration"))));
+        mTimer = new Timer();
+        mEndRotation = rotation;
+        timeout = time;
+        
         addRequirements(subsystem);
     }
 
@@ -52,6 +62,6 @@ public class DriveAtPath extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.sample(mTrajectory.getTotalTimeSeconds()).poseMeters.getTranslation()) < 0.01;
+        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.sample(mTrajectory.getTotalTimeSeconds()).poseMeters.getTranslation()) < 0.01 || mTimer.get() > timeout;
     }
 }
