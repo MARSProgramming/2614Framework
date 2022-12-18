@@ -56,24 +56,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   // Here we calculate the theoretical maximum angular velocity. You can also replace this with a measured amount.
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
-          Math.hypot((double) Constants.DriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, (double) Constants.DriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0);
+          Math.hypot(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0);
 
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
           // Front left
-          new Translation2d((double) Constants.DriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, (double) Constants.DriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          new Translation2d(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
           // Front right
-          new Translation2d((double) Constants.DriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -(double) Constants.DriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          new Translation2d(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
           // Back left
-          new Translation2d(-(double) Constants.DriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, (double) Constants.DriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
           // Back right
-          new Translation2d(-(double) Constants.DriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -(double) Constants.DriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
+          new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
   );
 
   // By default we use a Pigeon for our gyroscope. But if you use another gyroscope, like a NavX, you can change this.
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
   // FIXME Remove if you are using a Pigeon
-  private final Pigeon2 m_pigeon = new Pigeon2((int) Constants.DriveConstants.get("DRIVETRAIN_PIGEON_ID"));
+  private final Pigeon2 m_pigeon = new Pigeon2(Constants.IntegerDriveConstants.get("DRIVETRAIN_PIGEON_ID"));
 
   public double getPigeonAngle(){
         return Math.toRadians(m_pigeon.getYaw());
@@ -96,10 +96,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
-    mSnapController = new ProfiledPIDController((double) Constants.SnapConstants.get("kP"),
-                                                     (double) Constants.SnapConstants.get("kI"), 
-                                                     (double) Constants.SnapConstants.get("kD"),
-                                                     new TrapezoidProfile.Constraints((double) Constants.AutoConstants.get("holonomicOMaxVelocity"), (double) Constants.AutoConstants.get("holonomicOMaxAcceleration")));
+    mSnapController = new ProfiledPIDController(Constants.DoubleSnapConstants.get("kP"),
+                                                     Constants.DoubleSnapConstants.get("kI"), 
+                                                     Constants.DoubleSnapConstants.get("kD"),
+                                                     new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration")));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
     // There are 4 methods you can call to create your swerve modules.
     // The method you use depends on what motors you are using.
@@ -133,13 +133,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
             // This can either be STANDARD or FAST depending on your gear configuration
             Mk4iSwerveModuleHelper.GearRatio.L1,
             // This is the ID of the drive motor
-            (int) Constants.DriveConstants.get("FRONT_LEFT_MODULE_DRIVE_MOTOR"),
+            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_DRIVE_MOTOR"),
             // This is the ID of the steer motor
-            (int) Constants.DriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
             // This is the ID of the steer encoder
-            (int) Constants.DriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
+            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
             // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
-            (double) Constants.DriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET")
+            Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET")
     );
 
     // We will do the same for the other modules
@@ -150,12 +150,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
             Mk4iSwerveModuleHelper.GearRatio.L1,
-            (int) Constants.DriveConstants.get("FRONT_RIGHT_MODULE_DRIVE_MOTOR"),
+            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_DRIVE_MOTOR"),
             
-            (int) Constants.DriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
             
-            (int) Constants.DriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
-            (double) Constants.DriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET")
+            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
+            Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET")
     );
 
     m_backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
@@ -165,12 +165,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
             Mk4iSwerveModuleHelper.GearRatio.L1,
-            (int) Constants.DriveConstants.get("BACK_LEFT_MODULE_DRIVE_MOTOR"),
+            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_DRIVE_MOTOR"),
             
-            (int) Constants.DriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
             
-            (int) Constants.DriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
-            (double) Constants.DriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET")
+            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
+            Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET")
     );
 
     m_backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
@@ -180,12 +180,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
             Mk4iSwerveModuleHelper.GearRatio.L1,
-            (int) Constants.DriveConstants.get("BACK_RIGHT_MODULE_DRIVE_MOTOR"),
+            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_DRIVE_MOTOR"),
             
-            (int) Constants.DriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
             
-            (int) Constants.DriveConstants.get("ACK_RIGHT_MODULE_STEER_ENCODER"),
-            (double) Constants.DriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET")
+            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_ENCODER"),
+            Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET")
     );
     mOdometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d(m_pigeon.getYaw()));
   }

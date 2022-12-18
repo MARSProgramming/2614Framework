@@ -16,6 +16,9 @@
   },
   "NetworkTables": {
     "Shuffleboard": {
+      "AutoConstants": {
+        "open": true
+      },
       "Drivetrain": {
         "Back Left Module": {
           "open": true
@@ -24,7 +27,8 @@
           "open": true
         },
         "open": true
-      }
+      },
+      "open": true
     },
     "SmartDashboard": {
       "open": true
