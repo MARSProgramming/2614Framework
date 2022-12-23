@@ -6,10 +6,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
-import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
-import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
-import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
-import com.swervedrivespecialties.swervelib.SwerveModule;
+import frc.robot.swervelib.Mk4ModuleConfiguration;
+import frc.robot.swervelib.Mk4iSwerveModuleHelper;
+import frc.robot.swervelib.ModuleConfiguration;
+import frc.robot.swervelib.SdsModuleConfigurations;
+import frc.robot.swervelib.SwerveModule;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -47,8 +48,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-          SdsModuleConfigurations.MK3_STANDARD.getDriveReduction() *
-          SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
+          SdsModuleConfigurations.MK4I_L3.getDriveReduction() *
+          SdsModuleConfigurations.MK4I_L3.getWheelDiameter() * Math.PI;
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
@@ -124,6 +125,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
     test.setCanivoreName("Drivetrain");
+    
     m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
             // This parameter is optional, but will allow you to see the current state of the module on the dashboard.
             tab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -131,9 +133,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(0, 0),
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L1,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
             // This is the ID of the drive motor
-            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_DRIVE_MOTOR"),
+            15,
             // This is the ID of the steer motor
             Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
             // This is the ID of the steer encoder
@@ -142,6 +144,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
             Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET")
     );
 
+    Mk4iSwerveModuleHelper.GearRatio j = Mk4iSwerveModuleHelper.GearRatio.L3;
+    //new ModuleConfiguration(wheelDiameter, driveReduction, driveInverted, steerReduction, steerInverted, canivoreName)
     // We will do the same for the other modules
     m_frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Right Module", BuiltInLayouts.kList)
@@ -149,8 +153,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(2, 0),
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L1,
-            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_DRIVE_MOTOR"),
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            14,
             
             Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
             
@@ -164,8 +168,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(4, 0),
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L1,
-            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_DRIVE_MOTOR"),
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            16,
             
             Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
             
@@ -179,8 +183,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withPosition(6, 0),
             test,
             // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L1,
-            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_DRIVE_MOTOR"),
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            17, 
             
             Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
             

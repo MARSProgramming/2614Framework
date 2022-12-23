@@ -19,7 +19,7 @@ public class TestAutoPlay extends SequentialCommandGroup{
         mDrivetrain = drivetrain;
         addRequirements(drivetrain);
 
-        Trajectory testTrajectory = openTrajectoryFile("test5BallPath.wpilib.json");
+        Trajectory testTrajectory = openTrajectoryFile("testForwardPath.wpilib.json");
         addCommands(
             new ResetDrivePose(mDrivetrain, 7.69, 1.94, 272.5),
             new DriveAtPath(mDrivetrain, testTrajectory, new Rotation2d(0.0))

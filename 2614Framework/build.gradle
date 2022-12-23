@@ -73,7 +73,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.FRC-Sonic-Squirrels:swerve-lib:ffda2d6424ade0c97ce1a7cfc7569f0b50b7b8f0'
+    implementation 'com.github.ShawnLi14:swerve-lib:FixedCanivore-SNAPSHOT'
 }
 
 // Simulation configuration (e.g. environment variables).

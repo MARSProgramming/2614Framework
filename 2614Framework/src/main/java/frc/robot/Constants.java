@@ -42,8 +42,8 @@ public final class Constants {
         maps.add(DoubleAutoConstants);
         maps.add(DoubleControllerConstants);
 
-       DoubleDriveConstants.put("DRIVETRAIN_TRACKWIDTH_METERS", 0.5334);
-       DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.5334); 
+       DoubleDriveConstants.put("DRIVETRAIN_TRACKWIDTH_METERS", 0.57);
+       DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.57); 
 
        IntegerDriveConstants.put("DRIVETRAIN_PIGEON_ID", 31); 
        StringDriveConstants.put("kDriveCANivore", "canivore");
@@ -51,22 +51,22 @@ public final class Constants {
        IntegerDriveConstants.put("FRONT_LEFT_MODULE_DRIVE_MOTOR", 15); 
        IntegerDriveConstants.put("FRONT_LEFT_MODULE_STEER_MOTOR", 5); 
        IntegerDriveConstants.put("FRONT_LEFT_MODULE_STEER_ENCODER", 25); 
-       DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(0.0)); 
+       DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(58.97460937500001)); 
 
        IntegerDriveConstants.put("FRONT_RIGHT_MODULE_DRIVE_MOTOR", 14); 
        IntegerDriveConstants.put("FRONT_RIGHT_MODULE_STEER_MOTOR", 4); 
        IntegerDriveConstants.put("FRONT_RIGHT_MODULE_STEER_ENCODER", 24); 
-       DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(0.0)); 
+       DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(271.84218750000001)); 
 
        IntegerDriveConstants.put("BACK_LEFT_MODULE_DRIVE_MOTOR", 16); 
        IntegerDriveConstants.put("BACK_LEFT_MODULE_STEER_MOTOR", 6); 
        IntegerDriveConstants.put("BACK_LEFT_MODULE_STEER_ENCODER", 26); 
-       DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(0.0)); 
+       DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(340.306640625));
                 
        IntegerDriveConstants.put("BACK_RIGHT_MODULE_DRIVE_MOTOR", 17); 
        IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_MOTOR", 7); 
        IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_ENCODER", 27); 
-       DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(0.0)); 
+       DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(292.14492187500001)); 
 
        DoubleSnapConstants.put("kP", 0.1);
        DoubleSnapConstants.put("kI", 0.0);
