@@ -6,11 +6,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
-import frc.robot.swervelib.Mk4ModuleConfiguration;
-import frc.robot.swervelib.Mk4iSwerveModuleHelper;
-import frc.robot.swervelib.ModuleConfiguration;
-import frc.robot.swervelib.SdsModuleConfigurations;
-import frc.robot.swervelib.SwerveModule;
+import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
+import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+import com.swervedrivespecialties.swervelib.SwerveModule;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
