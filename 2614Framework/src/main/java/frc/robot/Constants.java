@@ -4,11 +4,14 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.util.DoubleHashMap;
 import frc.robot.util.StringHashMap;
 
@@ -21,11 +24,11 @@ import frc.robot.util.StringHashMap;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    /**
-     * The left-to-right distance between the drivetrain wheels
-     *
-     * Should be measured from center to center.
-     */
+/**
+ * The left-to-right distance between the drivetrain wheels
+ *
+ * Should be measured from center to center.
+ */
 
     public static final DoubleHashMap DoubleDriveConstants = new DoubleHashMap(Shuffleboard.getTab("DriveConstants"));
     public static final HashMap<String, Integer> IntegerDriveConstants = new HashMap<>();
@@ -34,6 +37,7 @@ public final class Constants {
     public static final DoubleHashMap DoubleAutoConstants = new DoubleHashMap(Shuffleboard.getTab("AutoConstants"));
     public static final DoubleHashMap DoubleControllerConstants = new DoubleHashMap(Shuffleboard.getTab("ControllerConstants"));
     public static final ArrayList<Object> maps = new ArrayList<>();
+
     static{
         maps.add(DoubleDriveConstants);
         maps.add(IntegerDriveConstants);
@@ -42,48 +46,65 @@ public final class Constants {
         maps.add(DoubleAutoConstants);
         maps.add(DoubleControllerConstants);
 
-       DoubleDriveConstants.put("DRIVETRAIN_TRACKWIDTH_METERS", 0.57);
-       DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.57); 
+        DoubleDriveConstants.put("DRIVETRAIN_TRACKWIDTH_METERS", 0.57);
+        DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.57); 
 
-       IntegerDriveConstants.put("DRIVETRAIN_PIGEON_ID", 31); 
-       StringDriveConstants.put("kDriveCANivore", "canivore");
+        IntegerDriveConstants.put("DRIVETRAIN_PIGEON_ID", 31); 
+        StringDriveConstants.put("kDriveCANivore", "Drivetrain");
 
-       IntegerDriveConstants.put("FRONT_LEFT_MODULE_DRIVE_MOTOR", 15); 
-       IntegerDriveConstants.put("FRONT_LEFT_MODULE_STEER_MOTOR", 5); 
-       IntegerDriveConstants.put("FRONT_LEFT_MODULE_STEER_ENCODER", 25); 
-       DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(58.97460937500001)); 
+        File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
+        if (swerveZeros.exists()) {
+            try{
+                Scanner sc = new Scanner(swerveZeros);
+                DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(Double.parseDouble(sc.nextLine())));
+                DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(Double.parseDouble(sc.nextLine())));
+                DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(Double.parseDouble(sc.nextLine())));
+                DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(Double.parseDouble(sc.nextLine()))); 
+                sc.close();
+            }
+            catch(FileNotFoundException e){
+                System.out.println("Swerve Zeros file not found");
+            }
+        }
+        else{
+            DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(58.97460937500001));
+            DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(271.84218750000001));
+            DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(340.306640625));
+            DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(292.14492187500001)); 
+        }
 
-       IntegerDriveConstants.put("FRONT_RIGHT_MODULE_DRIVE_MOTOR", 14); 
-       IntegerDriveConstants.put("FRONT_RIGHT_MODULE_STEER_MOTOR", 4); 
-       IntegerDriveConstants.put("FRONT_RIGHT_MODULE_STEER_ENCODER", 24); 
-       DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(271.84218750000001)); 
+        IntegerDriveConstants.put("FRONT_LEFT_MODULE_DRIVE_MOTOR", 15); 
+        IntegerDriveConstants.put("FRONT_LEFT_MODULE_STEER_MOTOR", 5); 
+        IntegerDriveConstants.put("FRONT_LEFT_MODULE_STEER_ENCODER", 25); 
 
-       IntegerDriveConstants.put("BACK_LEFT_MODULE_DRIVE_MOTOR", 16); 
-       IntegerDriveConstants.put("BACK_LEFT_MODULE_STEER_MOTOR", 6); 
-       IntegerDriveConstants.put("BACK_LEFT_MODULE_STEER_ENCODER", 26); 
-       DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -Math.toRadians(340.306640625));
-                
-       IntegerDriveConstants.put("BACK_RIGHT_MODULE_DRIVE_MOTOR", 17); 
-       IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_MOTOR", 7); 
-       IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_ENCODER", 27); 
-       DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -Math.toRadians(292.14492187500001)); 
+        IntegerDriveConstants.put("FRONT_RIGHT_MODULE_DRIVE_MOTOR", 14); 
+        IntegerDriveConstants.put("FRONT_RIGHT_MODULE_STEER_MOTOR", 4); 
+        IntegerDriveConstants.put("FRONT_RIGHT_MODULE_STEER_ENCODER", 24);  
 
-       DoubleSnapConstants.put("kP", 0.1);
-       DoubleSnapConstants.put("kI", 0.0);
-       DoubleSnapConstants.put("kD", 0.0);
-    
-       DoubleAutoConstants.put("holonomicXkP", 0.1);
-       DoubleAutoConstants.put("holonomicXkI", 0.0);
-       DoubleAutoConstants.put("holonomicXkD", 0.0);
-       DoubleAutoConstants.put("holonomicYkP", 0.1);
-       DoubleAutoConstants.put("holonomicYkI", 0.0);
-       DoubleAutoConstants.put("holonomicYkD", 0.0);
-       DoubleAutoConstants.put("holonomicOkP", 0.1);
-       DoubleAutoConstants.put("holonomicOkI", 0.0);
-       DoubleAutoConstants.put("holonomicOkD", 0.0);
-       DoubleAutoConstants.put("holonomicOMaxVelocity", 6.0);
-       DoubleAutoConstants.put("holonomicOMaxAcceleration", 15.0);
+        IntegerDriveConstants.put("BACK_LEFT_MODULE_DRIVE_MOTOR", 16); 
+        IntegerDriveConstants.put("BACK_LEFT_MODULE_STEER_MOTOR", 6); 
+        IntegerDriveConstants.put("BACK_LEFT_MODULE_STEER_ENCODER", 26); 
 
-       DoubleControllerConstants.put("kTriggerThreshold", 0.6);
+        IntegerDriveConstants.put("BACK_RIGHT_MODULE_DRIVE_MOTOR", 17); 
+        IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_MOTOR", 7); 
+        IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_ENCODER", 27); 
+
+        DoubleSnapConstants.put("kP", 0.1);
+        DoubleSnapConstants.put("kI", 0.0);
+        DoubleSnapConstants.put("kD", 0.0);
+
+        DoubleAutoConstants.put("holonomicXkP", 0.1);
+        DoubleAutoConstants.put("holonomicXkI", 0.0);
+        DoubleAutoConstants.put("holonomicXkD", 0.0);
+        DoubleAutoConstants.put("holonomicYkP", 0.1);
+        DoubleAutoConstants.put("holonomicYkI", 0.0);
+        DoubleAutoConstants.put("holonomicYkD", 0.0);
+        DoubleAutoConstants.put("holonomicOkP", 0.1);
+        DoubleAutoConstants.put("holonomicOkI", 0.0);
+        DoubleAutoConstants.put("holonomicOkD", 0.0);
+        DoubleAutoConstants.put("holonomicOMaxVelocity", 4.0);
+        DoubleAutoConstants.put("holonomicOMaxAcceleration", 6.0);
+
+        DoubleControllerConstants.put("kTriggerThreshold", 0.6);
     }
 }

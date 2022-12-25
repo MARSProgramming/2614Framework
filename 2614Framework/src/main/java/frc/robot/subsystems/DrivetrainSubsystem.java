@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
@@ -20,22 +24,19 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Config;
 
-public class DrivetrainSubsystem extends SubsystemBase {
-  /**
-   * The maximum voltage that will be delivered to the drive motors.
-   * <p>
-   * This can be reduced to cap the robot's maximum speed. Typically, this is useful during initial testing of the robot.
-   */
+public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public static final double MAX_VOLTAGE = 12.0;
   private ProfiledPIDController mSnapController;
-  // FIXME Measure the drivetrain's maximum velocity or calculate the theoretical.
   //  The formula for calculating the theoretical maximum velocity is:
   //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
   //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
@@ -69,12 +70,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
           new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
   );
 
-  // By default we use a Pigeon for our gyroscope. But if you use another gyroscope, like a NavX, you can change this.
-  // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
-  // cause the angle reading to increase until it wraps back over to zero.
-  // FIXME Remove if you are using a Pigeon
-  private final Pigeon2 m_pigeon = new Pigeon2(Constants.IntegerDriveConstants.get("DRIVETRAIN_PIGEON_ID"));
+  @Config.ToggleButton
+  void zeroSwerves(boolean run) {
+    if(run){
+        File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
+        try{
+            swerveZeros.createNewFile();
+            FileWriter writer = new FileWriter(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
+            writer.write(Math.toDegrees(m_frontLeftModule.getSteerAngle()-Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"))%360 + "\n");
+            writer.write(Math.toDegrees(m_frontRightModule.getSteerAngle()-Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"))%360 + "\n");
+            writer.write(Math.toDegrees(m_backLeftModule.getSteerAngle()-Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"))%360 + "\n");
+            writer.write(Math.toDegrees(m_backRightModule.getSteerAngle()-Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"))%360 + "\n");
+            writer.close();
 
+            /*Constants.DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -m_frontLeftModule.getSteerAngle());
+            Constants.DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -m_frontRightModule.getSteerAngle());
+            Constants.DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -m_backLeftModule.getSteerAngle());
+            Constants.DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -m_backRightModule.getSteerAngle()); 
+            createSwerveModules(Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"));*/
+        }
+        catch(IOException e){
+            System.out.println("File could not be found when writing to swerve zeros");
+        }
+    }
+  }
+
+  private final Pigeon2 m_pigeon = new Pigeon2(Constants.IntegerDriveConstants.get("DRIVETRAIN_PIGEON_ID"));
+  
   public double getPigeonAngle(){
         return Math.toRadians(m_pigeon.getYaw());
   }
@@ -82,117 +104,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
           return mSnapController;
   }
   private final SwerveDriveOdometry mOdometry;
-  // FIXME Uncomment if you are using a NavX
-//  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
-  // These are our modules. We initialize them in the constructor.
-  private final SwerveModule m_frontLeftModule;
-  private final SwerveModule m_frontRightModule;
-  private final SwerveModule m_backLeftModule;
-  private final SwerveModule m_backRightModule;
+  private SwerveModule m_frontLeftModule;
+  private SwerveModule m_frontRightModule;
+  private SwerveModule m_backLeftModule;
+  private SwerveModule m_backRightModule;
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public DrivetrainSubsystem() {
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+    createSwerveModules(Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"));
+
 
     mSnapController = new ProfiledPIDController(Constants.DoubleSnapConstants.get("kP"),
-                                                     Constants.DoubleSnapConstants.get("kI"), 
-                                                     Constants.DoubleSnapConstants.get("kD"),
-                                                     new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration")));
+        Constants.DoubleSnapConstants.get("kI"), 
+        Constants.DoubleSnapConstants.get("kD"),
+        new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration")));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
-    // There are 4 methods you can call to create your swerve modules.
-    // The method you use depends on what motors you are using.
-    //
-    // Mk3SwerveModuleHelper.createFalcon500(...)
-    //   Your module has two Falcon 500s on it. One for steering and one for driving.
-    //
-    // Mk3SwerveModuleHelper.createNeo(...)
-    //   Your module has two NEOs on it. One for steering and one for driving.
-    //
-    // Mk3SwerveModuleHelper.createFalcon500Neo(...)
-    //   Your module has a Falcon 500 and a NEO on it. The Falcon 500 is for driving and the NEO is for steering.
-    //
-    // Mk3SwerveModuleHelper.createNeoFalcon500(...)
-    //   Your module has a NEO and a Falcon 500 on it. The NEO is for driving and the Falcon 500 is for steering.
-    //
-    // Similar helpers also exist for Mk4 modules using the Mk4SwerveModuleHelper class.
-
-    // By default we will use Falcon 500s in standard configuration. But if you use a different configuration or motors
-    // you MUST change it. If you do not, your code will crash on startup.
-    // FIXME Setup motor configuration
-
-    Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
-    test.setCanivoreName("Drivetrain");
-    
-    m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
-            // This parameter is optional, but will allow you to see the current state of the module on the dashboard.
-            tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(0, 0),
-            test,
-            // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L3,
-            // This is the ID of the drive motor
-            15,
-            // This is the ID of the steer motor
-            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
-            // This is the ID of the steer encoder
-            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
-            // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
-            Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET")
-    );
-
-    Mk4iSwerveModuleHelper.GearRatio j = Mk4iSwerveModuleHelper.GearRatio.L3;
-    //new ModuleConfiguration(wheelDiameter, driveReduction, driveInverted, steerReduction, steerInverted, canivoreName)
-    // We will do the same for the other modules
-    m_frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
-            tab.getLayout("Front Right Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(2, 0),
-            test,
-            // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L3,
-            14,
-            
-            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
-            
-            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
-            Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET")
-    );
-
-    m_backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
-            tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(4, 0),
-            test,
-            // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L3,
-            16,
-            
-            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
-            
-            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
-            Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET")
-    );
-
-    m_backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
-            tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(6, 0),
-            test,
-            // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4iSwerveModuleHelper.GearRatio.L3,
-            17, 
-            
-            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
-            
-            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_ENCODER"),
-            Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET")
-    );
     mOdometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d(m_pigeon.getYaw()));
   }
-
   /**
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
@@ -203,33 +133,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
     config.MountPosePitch = 0;
     config.MountPoseRoll = 90;
     m_pigeon.configAllSettings(config);
-
-    // FIXME Uncomment if you are using a NavX
-//    m_navx.zeroYaw();
   }
-
   public Rotation2d getGyroscopeRotation() {
     return Rotation2d.fromDegrees(m_pigeon.getYaw());
-
-    // FIXME Uncomment if you are using a NavX
-//    if (m_navx.isMagnetometerCalibrated()) {
-//      // We will only get valid fused headings if the magnetometer is calibrated
-//      return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-//    }
-//
-//    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-//    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
   }
-
   public void drive(ChassisSpeeds chassisSpeeds) {
     m_chassisSpeeds = chassisSpeeds;
   }
-
   @Override
   public void periodic() {
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
-
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
@@ -238,15 +152,66 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Y", this.getPose().getY());
     SmartDashboard.putNumber("rot", this.getPose().getRotation().getDegrees());
 }
-
   public Pose2d getPose(){
     return mOdometry.getPoseMeters();
   }
   public void setPose(Pose2d pose, Rotation2d rotation){
    mOdometry.resetPosition(pose, rotation);
   }
-
   public SwerveDriveKinematics getSwerveKinematics(){
         return m_kinematics;
+  }
+
+  public void createSwerveModules(double fl, double fr, double bl, double br){
+    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
+    Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
+    test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
+
+    m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
+            tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(0, 0),
+            test,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            15,
+            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
+            fl
+    );
+
+    m_frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
+            tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(2, 0),
+            test,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            14,
+            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
+            fr
+    );
+    m_backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
+            tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(4, 0),
+            test,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            16,
+            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
+            bl
+    );
+    m_backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
+            tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(6, 0),
+            test,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
+            17, 
+            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
+            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_ENCODER"),
+            br
+    );
   }
 }

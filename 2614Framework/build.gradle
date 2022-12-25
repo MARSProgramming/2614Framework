@@ -74,6 +74,7 @@ repositories {
 
 dependencies {
     implementation 'com.github.ShawnLi14:swerve-lib:FixedCanivore-SNAPSHOT'
+    implementation "com.github.Oblarg:Oblog:4.0.9"
 }
 
 // Simulation configuration (e.g. environment variables).
