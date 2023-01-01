@@ -2,24 +2,23 @@ package frc.robot.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public class DoubleHashMap implements ReadsFromDashHashMap{
     private final HashMap<String, Double> map;
     private ArrayList<NetworkTableEntry> entryArray;
-    private ShuffleboardTab tab;
-    public DoubleHashMap(ShuffleboardTab tab){
+    private ShuffleboardLayout layout;
+    public DoubleHashMap(ShuffleboardLayout layout){
         map = new HashMap<>();
         entryArray = new ArrayList<>();
-        this.tab = tab;
+        this.layout = layout;
     }
 
     public void put(String key, double value){
         map.put(key, value);
-        entryArray.add(tab.add(key, value).getEntry());
+        entryArray.add(layout.add(key, value).getEntry());
     }
 
     public double get(String key){

@@ -8,10 +8,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.util.DoubleHashMap;
 import frc.robot.util.StringHashMap;
 
@@ -30,12 +33,13 @@ public final class Constants {
  * Should be measured from center to center.
  */
 
-    public static final DoubleHashMap DoubleDriveConstants = new DoubleHashMap(Shuffleboard.getTab("DriveConstants"));
+    public static final ShuffleboardTab ConstantsTab = Shuffleboard.getTab("Constants");
+    public static final DoubleHashMap DoubleDriveConstants = new DoubleHashMap(ConstantsTab.getLayout("Drive", BuiltInLayouts.kList).withSize(2, 4));
     public static final HashMap<String, Integer> IntegerDriveConstants = new HashMap<>();
-    public static final StringHashMap StringDriveConstants = new StringHashMap(Shuffleboard.getTab("DriveConstants"));
-    public static final DoubleHashMap DoubleSnapConstants = new DoubleHashMap(Shuffleboard.getTab("SnapConstants"));
-    public static final DoubleHashMap DoubleAutoConstants = new DoubleHashMap(Shuffleboard.getTab("AutoConstants"));
-    public static final DoubleHashMap DoubleControllerConstants = new DoubleHashMap(Shuffleboard.getTab("ControllerConstants"));
+    public static final StringHashMap StringDriveConstants = new StringHashMap(ConstantsTab.getLayout("Drive", BuiltInLayouts.kList).withSize(2, 4));
+    public static final DoubleHashMap DoubleSnapConstants = new DoubleHashMap(ConstantsTab.getLayout("Snap", BuiltInLayouts.kList).withSize(2, 4));
+    public static final DoubleHashMap DoubleAutoConstants = new DoubleHashMap(ConstantsTab.getLayout("Auto", BuiltInLayouts.kList).withSize(2, 4));
+    public static final DoubleHashMap DoubleControllerConstants = new DoubleHashMap(ConstantsTab.getLayout("Controller", BuiltInLayouts.kList));
     public static final ArrayList<Object> maps = new ArrayList<>();
 
     static{
@@ -47,7 +51,8 @@ public final class Constants {
         maps.add(DoubleControllerConstants);
 
         DoubleDriveConstants.put("DRIVETRAIN_TRACKWIDTH_METERS", 0.57);
-        DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.57); 
+        DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.57);
+        DoubleDriveConstants.put("MAX_SPEED_MULTIPLIER", 1.0); 
 
         IntegerDriveConstants.put("DRIVETRAIN_PIGEON_ID", 31); 
         StringDriveConstants.put("kDriveCANivore", "Drivetrain");

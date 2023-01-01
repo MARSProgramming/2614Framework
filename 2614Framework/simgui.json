@@ -11,12 +11,17 @@
       "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
-      "/LiveWindow/Ungrouped/Scheduler": "Scheduler"
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/Shuffleboard/Constants/Drive/ZeroSwerves": "Command",
+      "/SmartDashboard/Zero Swerves": "Command"
     }
   },
   "NetworkTables": {
     "Shuffleboard": {
       "AutoConstants": {
+        "open": true
+      },
+      "Constants": {
         "open": true
       },
       "Drivetrain": {
@@ -25,8 +30,7 @@
         },
         "Back Right Module": {
           "open": true
-        },
-        "open": true
+        }
       },
       "open": true
     },

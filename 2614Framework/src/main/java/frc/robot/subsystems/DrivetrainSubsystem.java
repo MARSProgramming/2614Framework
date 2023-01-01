@@ -31,8 +31,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ZeroSwerves;
 import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public static final double MAX_VOLTAGE = 12.0;
@@ -49,7 +49,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
           SdsModuleConfigurations.MK4I_L3.getDriveReduction() *
-          SdsModuleConfigurations.MK4I_L3.getWheelDiameter() * Math.PI;
+          SdsModuleConfigurations.MK4I_L3.getWheelDiameter() * Math.PI * Constants.DoubleDriveConstants.get("MAX_SPEED_MULTIPLIER");
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
@@ -70,8 +70,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
           new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
   );
 
-  @Config.ToggleButton
-  void zeroSwerves(boolean run) {
+  public void zeroSwerves(boolean run) {
     if(run){
         File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
         try{
@@ -114,7 +113,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
 
   public DrivetrainSubsystem() {
     createSwerveModules(Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"));
-
+    Constants.ConstantsTab.getLayout("Drive", BuiltInLayouts.kList).add(new ZeroSwerves(this));
 
     mSnapController = new ProfiledPIDController(Constants.DoubleSnapConstants.get("kP"),
         Constants.DoubleSnapConstants.get("kI"), 
