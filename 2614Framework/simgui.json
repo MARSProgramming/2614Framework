@@ -13,6 +13,7 @@
       "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/Shuffleboard/Constants/Drive/ZeroSwerves": "Command",
+      "/Shuffleboard/Pre-Match/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/Zero Swerves": "Command"
     }
   },

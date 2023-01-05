@@ -11,15 +11,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.auto.plays.TestAutoPlay;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.ResetDrivePose;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.CustomXboxController;
-import io.github.oblarg.oblog.Logger;
+import frc.robot.util.AutoChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,18 +36,12 @@ public class RobotContainer {
   private final CustomXboxController mPilot = new CustomXboxController(0);
 
   private HashMap<String, Pose2d> mPointPositionMap;
-
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Set up the default command for the drivetrain.
-    // The controls are for field-oriented driving:
-    // Left stick Y axis -> forward and backwards movement
-    // Left stick X axis -> left and right movement
-    // Right stick X axis -> rotation
     /*mDrivetrainSubsystem.setDefaultCommand(new DriveSnapRotation(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
@@ -63,7 +56,6 @@ public class RobotContainer {
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
-    
     mPointPositionMap = new HashMap<>();
     mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
   }
@@ -75,10 +67,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureTeleopBindings() {
-    // Back button zeros the gyroscope
-    new Button(mPilot::getYButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
+    mPilot.getYButtonObject().whenPressed(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
   }
@@ -94,7 +83,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new TestAutoPlay(mDrivetrainSubsystem);
+    return autoChooser.getSelected();
   }
 
   private static double deadband(double value, double deadband) {
@@ -116,6 +105,9 @@ public class RobotContainer {
 
     // Square the axis
     value = Math.copySign(value * value, value);
+
+    //"Stage" mode
+    //value = Math.round(value * 5.0)/5.0;
 
     return value;
   }

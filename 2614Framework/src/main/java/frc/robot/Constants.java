@@ -52,7 +52,7 @@ public final class Constants {
 
         DoubleDriveConstants.put("DRIVETRAIN_TRACKWIDTH_METERS", 0.57);
         DoubleDriveConstants.put("DRIVETRAIN_WHEELBASE_METERS", 0.57);
-        DoubleDriveConstants.put("MAX_SPEED_MULTIPLIER", 1.0); 
+        DoubleDriveConstants.put("MAX_SPEED_MULTIPLIER", 0.4); 
 
         IntegerDriveConstants.put("DRIVETRAIN_PIGEON_ID", 31); 
         StringDriveConstants.put("kDriveCANivore", "Drivetrain");
