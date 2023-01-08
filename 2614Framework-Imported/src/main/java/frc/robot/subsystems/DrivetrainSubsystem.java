@@ -12,7 +12,6 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
-import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -51,7 +50,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-          SdsModuleConfigurations.MK4_L3.getDriveReduction() *s
+          SdsModuleConfigurations.MK4_L3.getDriveReduction() *
           SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI * Constants.DoubleDriveConstants.get("MAX_SPEED_MULTIPLIER");
   /**
    * The maximum angular velocity of the robot in radians per second.

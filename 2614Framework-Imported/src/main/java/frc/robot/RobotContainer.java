@@ -17,6 +17,8 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ResetDrivePose;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
 
@@ -30,13 +32,15 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
+  private final Intake mIntake = new Intake();
+  private final Shooter mShooter = new Shooter();
 
   ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
 
   private HashMap<String, Pose2d> mPointPositionMap;
-  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
+  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntake, mShooter);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
