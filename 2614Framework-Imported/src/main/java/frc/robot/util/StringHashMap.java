@@ -3,12 +3,12 @@ package frc.robot.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 public class StringHashMap implements ReadsFromDashHashMap{
     private final HashMap<String, String> map;
-    private ArrayList<NetworkTableEntry> entryArray;
+    private ArrayList<SimpleWidget> entryArray;
     private ShuffleboardLayout layout;
     public StringHashMap(ShuffleboardLayout layout){
         map = new HashMap<>();
@@ -17,7 +17,7 @@ public class StringHashMap implements ReadsFromDashHashMap{
     }
 
     public void put(String key, String value){
-        if(!map.containsKey(key)) entryArray.add(layout.add(key, value).getEntry());
+        if(!map.containsKey(key)) entryArray.add(layout.add(key, value));
         map.put(key, value);
     }
 
@@ -27,8 +27,8 @@ public class StringHashMap implements ReadsFromDashHashMap{
 
     @Override
     public void readFromShuffleboard(){
-        for(NetworkTableEntry entry : entryArray){
-            map.put(entry.getName(), entry.getString(""));
+        for(SimpleWidget entry : entryArray){
+            map.put(entry.getTitle(), entry.getEntry().getString(""));
         }
     }
 }

@@ -103,6 +103,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.ShawnLi14:swerve-lib:FixedCanivore-SNAPSHOT'
-    implementation "com.github.Oblarg:Oblog:4.0.9"
+    implementation 'com.github.ShawnLi14:swerve-lib:47afbca94d6bd6ef33de9523930bab4af8a417b2'
+    implementation "com.github.Oblarg:Oblog:5.1.0"
 }

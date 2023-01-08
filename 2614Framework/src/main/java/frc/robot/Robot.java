@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     Logger.configureLoggingAndConfig(m_robotContainer, false);
     Shuffleboard.selectTab("Pre-Match");
-    mCompressor.enableAnalog(100, 110);
+    //mCompressor.enableAnalog(100, 110);
   }
 
   @Override

@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.ZeroSwerves;
 import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public static final double MAX_VOLTAGE = 12.0;
@@ -121,7 +122,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
         Constants.DoubleSnapConstants.get("kD"),
         new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration")));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
-    mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(m_pigeon.getYaw()), null, new Pose2d());
+    mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(m_pigeon.getYaw()), getSwerveModulePositions(), new Pose2d());
     
   }
   /**
@@ -150,7 +151,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
     
-    mPoseEstimator.update(getGyroscopeRotation(), null);
+    mPoseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
     SmartDashboard.putNumber("X", this.getPose().getX());
     SmartDashboard.putNumber("Y", this.getPose().getY());
     SmartDashboard.putNumber("rot", this.getPose().getRotation().getDegrees());
@@ -159,18 +160,24 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     return mPoseEstimator.getEstimatedPosition();
   }
   public void setPose(Pose2d pose, Rotation2d rotation){
-   mPoseEstimator.resetPosition(rotation, null, pose);
+   mPoseEstimator.resetPosition(rotation, getSwerveModulePositions(), pose);
   }
   public SwerveDriveKinematics getSwerveKinematics(){
         return m_kinematics;
   }
+
   public SwerveModulePosition[] getSwerveModulePositions(){
         return new SwerveModulePosition[] {
-                m_frontLeftModule.getPosition(),
-                m_frontRightModule.getPosition(),
-                m_backLeftModule.getPosition(),
-                m_backRightModule.getPosition()
-        }
+                new SwerveModulePosition(m_frontLeftModule.getPosition(), new Rotation2d(m_frontLeftModule.getSteerAngle())),
+                new SwerveModulePosition(m_frontRightModule.getPosition(), new Rotation2d(m_frontRightModule.getSteerAngle())),
+                new SwerveModulePosition(m_backLeftModule.getPosition(), new Rotation2d(m_backLeftModule.getSteerAngle())),
+                new SwerveModulePosition(m_backRightModule.getPosition(), new Rotation2d(m_backRightModule.getSteerAngle()))
+        };
+  }
+
+  @Log
+  public double getFLPosition(){
+        return m_frontLeftModule.getPosition();
   }
 
   public void createSwerveModules(double fl, double fr, double bl, double br){

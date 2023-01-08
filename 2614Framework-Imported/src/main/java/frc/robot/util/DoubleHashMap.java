@@ -3,13 +3,12 @@ package frc.robot.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 public class DoubleHashMap implements ReadsFromDashHashMap{
     private final HashMap<String, Double> map;
-    private ArrayList<GenericEntry> entryArray;
+    private ArrayList<SimpleWidget> entryArray;
     private ShuffleboardLayout layout;
     public DoubleHashMap(ShuffleboardLayout layout){
         map = new HashMap<>();
@@ -19,7 +18,7 @@ public class DoubleHashMap implements ReadsFromDashHashMap{
 
     public void put(String key, double value){
         map.put(key, value);
-        entryArray.add(layout.add(key, value).getEntry());
+        entryArray.add(layout.add(key, value));
     }
 
     public double get(String key){
@@ -28,8 +27,8 @@ public class DoubleHashMap implements ReadsFromDashHashMap{
 
     @Override
     public void readFromShuffleboard(){
-        for(GenericEntry entry : entryArray){
-            map.put(entry.getName(), entry.getDouble(0.0));
+        for(SimpleWidget entry : entryArray){
+            map.put(entry.getTitle(), entry.getEntry().getDouble(0.0));
         }
     }
 }
