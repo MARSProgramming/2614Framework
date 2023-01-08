@@ -17,8 +17,8 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ResetDrivePose;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.util.CustomXboxController;
 import frc.robot.util.AutoChooser;
+import frc.robot.util.CustomXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

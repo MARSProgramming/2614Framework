@@ -31,16 +31,6 @@ public class DriveAtPath extends CommandBase {
         
         addRequirements(subsystem);
     }
-    public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation, double time) {
-        mTrajectory = traj;
-        mDrivetrainSubsystem = subsystem;
-        mController = new HolonomicDriveController(new PIDController(Constants.DoubleAutoConstants.get("holonomicXkP"), Constants.DoubleAutoConstants.get("holonomicXkI"), Constants.DoubleAutoConstants.get("holonomicXkD")), new PIDController(Constants.DoubleAutoConstants.get("holonomicYkP"), Constants.DoubleAutoConstants.get("holonomicYkI"), Constants.DoubleAutoConstants.get("holonomicYkD")), new ProfiledPIDController(Constants.DoubleAutoConstants.get("holonomicOkP"), Constants.DoubleAutoConstants.get("holonomicOkI"), Constants.DoubleAutoConstants.get("holonomicOkD"), new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration"))));
-        mTimer = new Timer();
-        mEndRotation = rotation;
-        timeout = time;
-        
-        addRequirements(subsystem);
-    }
 
     // Called when the command is initially scheduled.
     @Override

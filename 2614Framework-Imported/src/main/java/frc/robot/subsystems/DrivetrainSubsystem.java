@@ -140,6 +140,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     return Rotation2d.fromDegrees(m_pigeon.getYaw());
   }
   public void drive(ChassisSpeeds chassisSpeeds) {
+        SmartDashboard.putNumber("speeds", chassisSpeeds.vxMetersPerSecond);
     m_chassisSpeeds = chassisSpeeds;
   }
   @Override

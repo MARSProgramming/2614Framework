@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.shuffleboard.ConstantsIO;
@@ -36,7 +37,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     Logger.configureLoggingAndConfig(m_robotContainer, false);
-    Shuffleboard.selectTab("Pre-Match");
     mCompressor.enableAnalog(100, 110);
   }
 
@@ -45,9 +45,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     ConstantsIO.getInstance().periodic();
     Logger.updateEntries();
-    /*SmartDashboard.putNumber("psi", comp.getPressure());
-    SmartDashboard.putNumber("current", comp.getCurrent());
-    SmartDashboard.putBoolean("enabled compressor", comp.enabled());*/
+    SmartDashboard.putNumber("psi", mCompressor.getPressure());
+    SmartDashboard.putNumber("current", mCompressor.getCurrent());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

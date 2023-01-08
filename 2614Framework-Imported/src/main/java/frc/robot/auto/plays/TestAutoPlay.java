@@ -15,10 +15,10 @@ public class TestAutoPlay extends SequentialCommandGroup{
         mDrivetrain = drivetrain;
         addRequirements(drivetrain);
 
-        Trajectory testTrajectory = AutoChooser.openTrajectoryFile("testForwardPath.wpilib.json");
+        Trajectory testTrajectory = AutoChooser.openTrajectoryFile("testSpinPath.wpilib.json");
         addCommands(
             new ResetDrivePose(mDrivetrain, 2, 2, 0),
-            new DriveAtPath(mDrivetrain, testTrajectory, new Rotation2d(0.0))
+            new DriveAtPath(mDrivetrain, testTrajectory, new Rotation2d(180.0))
         );
     }
 }
