@@ -14,20 +14,20 @@ public class Intake extends SubsystemBase {
         }
         return mInstance;
     }
-    private DoubleSolenoid mSolenoid = new DoubleSolenoid(61, PneumaticsModuleType.REVPH, 0, 1);
+   // private DoubleSolenoid mSolenoid = new DoubleSolenoid(63, PneumaticsModuleType.REVPH, 0, 1);
     private TalonFX mMotor = new TalonFX(1);
     public Intake() {}
     public void extend(){
-        mSolenoid.set(Value.kForward);
+      //  mSolenoid.set(Value.kForward);
     }
     public void retract(){
-        mSolenoid.set(Value.kReverse);
+      //  mSolenoid.set(Value.kReverse);
     }
     public void toggle(){
-        mSolenoid.toggle();
+       // mSolenoid.toggle();
     }
     public void runPVoltage(double v){
-        mMotor.set(ControlMode.PercentOutput, v);
+        //mMotor.set(ControlMode.PercentOutput, v);
     }
     public TalonFX getMotor(){
         return mMotor;

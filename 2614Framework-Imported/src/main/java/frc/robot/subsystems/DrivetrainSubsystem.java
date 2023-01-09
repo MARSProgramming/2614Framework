@@ -185,7 +185,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
-    test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
+    //test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
 
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Left Module", BuiltInLayouts.kList)

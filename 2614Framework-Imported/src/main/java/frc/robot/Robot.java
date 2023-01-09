@@ -30,14 +30,14 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  Compressor mCompressor = new Compressor(61, PneumaticsModuleType.REVPH);
+  //Compressor mCompressor = new Compressor(63, PneumaticsModuleType.REVPH);
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     Logger.configureLoggingAndConfig(m_robotContainer, false);
-    mCompressor.enableAnalog(100, 110);
+    //mCompressor.enableAnalog(100, 110);
   }
 
   @Override
@@ -45,8 +45,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     ConstantsIO.getInstance().periodic();
     Logger.updateEntries();
-    SmartDashboard.putNumber("psi", mCompressor.getPressure());
-    SmartDashboard.putNumber("current", mCompressor.getCurrent());
+    //SmartDashboard.putNumber("psi", mCompressor.getPressure());
+    //SmartDashboard.putNumber("current", mCompressor.getCurrent());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

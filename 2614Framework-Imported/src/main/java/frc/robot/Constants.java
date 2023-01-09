@@ -104,11 +104,11 @@ public final class Constants {
         DoubleAutoConstants.put("holonomicYkP", 1);
         DoubleAutoConstants.put("holonomicYkI", 0);
         DoubleAutoConstants.put("holonomicYkD", 0);
-        DoubleAutoConstants.put("holonomicOkP", 0.1);
+        DoubleAutoConstants.put("holonomicOkP", 1);
         DoubleAutoConstants.put("holonomicOkI", 0.0);
         DoubleAutoConstants.put("holonomicOkD", 0.0);
-        DoubleAutoConstants.put("holonomicOMaxVelocity", 1);
-        DoubleAutoConstants.put("holonomicOMaxAcceleration", 5);
+        DoubleAutoConstants.put("holonomicOMaxVelocity", 5);
+        DoubleAutoConstants.put("holonomicOMaxAcceleration", 10);
 
         DoubleControllerConstants.put("kTriggerThreshold", 0.6);
     }

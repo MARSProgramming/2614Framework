@@ -12,9 +12,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ResetDrivePose;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ZeroGyroscope;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Intake;
@@ -62,6 +64,7 @@ public class RobotContainer {
     ));
     mPointPositionMap = new HashMap<>();
     mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
+    configureTeleopBindings();
   }
 
   /**
@@ -71,14 +74,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureTeleopBindings() {
-    mPilot.getYButtonObject().whenPressed(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
+    mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
+    mPilot.getXButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
+    mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
+    mPilot.getRightTriggerObject().onTrue(new ShooterCommand(mShooter, 999));
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
   }
 
   public void configureTestBindings(){
-    new Button(mPilot::getYButton)
-            .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
     System.out.println("Test Bindings Configured");
   }
   /**

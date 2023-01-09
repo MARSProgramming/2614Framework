@@ -28,11 +28,11 @@ public class TestAutoPlay extends SequentialCommandGroup{
         addCommands(
             new ResetDrivePose(mDrivetrain, 2, 2, 0),
             new ParallelCommandGroup(
-                new DriveAtPath(mDrivetrain, lPath1, new Rotation2d(90.0)), new IntakeCommand(mIntake, 2.3)
+                new DriveAtPath(mDrivetrain, lPath1, new Rotation2d(90.0)), new ShooterCommand(mShooter, 2.3)
             ),
             new ShooterCommand(mShooter, 2.0),
             new ParallelCommandGroup(
-                new DriveAtPath(mDrivetrain, lPath2, new Rotation2d(90.0)), new IntakeCommand(mIntake, 2.0)
+                new DriveAtPath(mDrivetrain, lPath2, new Rotation2d(90.0)), new ShooterCommand(mShooter, 2.0)
             ),
             new ShooterCommand(mShooter, 2.0)
         );
