@@ -24,17 +24,18 @@ public class TestAutoPlay extends SequentialCommandGroup{
         addRequirements(drivetrain);
 
         Trajectory lPath1 = AutoChooser.openTrajectoryFile("LPath.wpilib.json");
-        Trajectory lPath2 = AutoChooser.openTrajectoryFile("LPathPart2.wpilib.json");
+        Trajectory lPath2 = AutoChooser.openTrajectoryFile("testSpinPath.wpilib.json");
         addCommands(
             new ResetDrivePose(mDrivetrain, 2, 2, 0),
-            new ParallelCommandGroup(
+            /*new ParallelCommandGroup(
                 new DriveAtPath(mDrivetrain, lPath1, new Rotation2d(90.0)), new ShooterCommand(mShooter, 2.3)
             ),
             new ShooterCommand(mShooter, 2.0),
             new ParallelCommandGroup(
                 new DriveAtPath(mDrivetrain, lPath2, new Rotation2d(90.0)), new ShooterCommand(mShooter, 2.0)
             ),
-            new ShooterCommand(mShooter, 2.0)
+            new ShooterCommand(mShooter, 2.0)*/
+            new DriveAtPath(mDrivetrain, lPath1, new Rotation2d(180.0))
         );
     }
 }

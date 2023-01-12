@@ -130,11 +130,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    * 'forwards' direction.
    */
   public void zeroGyroscope() {
-    Pigeon2Configuration config = new Pigeon2Configuration();
-    config.MountPoseYaw = 0;
-    config.MountPosePitch = 0;
-    config.MountPoseRoll = 90;
-    m_pigeon.configAllSettings(config);
+    m_pigeon.setYaw(0);
+    System.out.print("Zeroed!");
   }
   public Rotation2d getGyroscopeRotation() {
     return Rotation2d.fromDegrees(m_pigeon.getYaw());
@@ -156,6 +153,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     SmartDashboard.putNumber("X", this.getPose().getX());
     SmartDashboard.putNumber("Y", this.getPose().getY());
     SmartDashboard.putNumber("rot", this.getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("pigeon", this.getPigeonAngle());
 }
   public Pose2d getPose(){
     return mPoseEstimator.getEstimatedPosition();

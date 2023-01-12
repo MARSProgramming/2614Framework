@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -36,18 +38,16 @@ public class DriveSnapRotation extends CommandBase {
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        SmartDashboard.putNumber("desiredSnap", Math.atan2(m_rotationYSupplier.getAsDouble(), m_rotationXSupplier.getAsDouble()));
-        if(m_rotationYSupplier.getAsDouble() > 0 || m_rotationXSupplier.getAsDouble() > 0){
-            double angleAdjustment = mSnapController.calculate(m_drivetrainSubsystem.getPigeonAngle(), Math.atan2(m_rotationYSupplier.getAsDouble(), m_rotationXSupplier.getAsDouble()));
-            m_drivetrainSubsystem.drive(
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                        m_translationXSupplier.getAsDouble(),
-                        m_translationYSupplier.getAsDouble(),
-                        angleAdjustment * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-                        m_drivetrainSubsystem.getGyroscopeRotation()
-                )
-            );
-        }
+        SmartDashboard.putNumber("desiredSnap", Math.atan2(-m_rotationYSupplier.getAsDouble(), m_rotationXSupplier.getAsDouble()));
+        double angleAdjustment = mSnapController.calculate(m_drivetrainSubsystem.getPigeonAngle(), Math.atan2(-m_rotationYSupplier.getAsDouble(), m_rotationXSupplier.getAsDouble())+Math.PI/2);
+        m_drivetrainSubsystem.drive(
+            ChassisSpeeds.fromFieldRelativeSpeeds(
+                    m_translationXSupplier.getAsDouble(),
+                    m_translationYSupplier.getAsDouble(),
+                    Math.abs(m_rotationYSupplier.getAsDouble()) > 0 || Math.abs(m_rotationXSupplier.getAsDouble()) > 0 ? angleAdjustment * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND : 0,
+                    m_drivetrainSubsystem.getGyroscopeRotation()
+            )
+        );
     }
 
     @Override

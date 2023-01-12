@@ -94,21 +94,21 @@ public final class Constants {
         IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_MOTOR", 7); 
         IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_ENCODER", 27); 
 
-        DoubleSnapConstants.put("kP", 0.03);
+        DoubleSnapConstants.put("kP", 0.25);
         DoubleSnapConstants.put("kI", 0.0);
         DoubleSnapConstants.put("kD", 0.0);
 
-        DoubleAutoConstants.put("holonomicXkP", 1);
+        DoubleAutoConstants.put("holonomicXkP", 0.4);
         DoubleAutoConstants.put("holonomicXkI", 0);
         DoubleAutoConstants.put("holonomicXkD", 0);
-        DoubleAutoConstants.put("holonomicYkP", 1);
+        DoubleAutoConstants.put("holonomicYkP", 0.4);
         DoubleAutoConstants.put("holonomicYkI", 0);
         DoubleAutoConstants.put("holonomicYkD", 0);
-        DoubleAutoConstants.put("holonomicOkP", 1);
+        DoubleAutoConstants.put("holonomicOkP", 2);
         DoubleAutoConstants.put("holonomicOkI", 0.0);
         DoubleAutoConstants.put("holonomicOkD", 0.0);
-        DoubleAutoConstants.put("holonomicOMaxVelocity", 5);
-        DoubleAutoConstants.put("holonomicOMaxAcceleration", 10);
+        DoubleAutoConstants.put("holonomicOMaxVelocity",2);
+        DoubleAutoConstants.put("holonomicOMaxAcceleration", 5);
 
         DoubleControllerConstants.put("kTriggerThreshold", 0.6);
     }

@@ -1,14 +1,13 @@
 package frc.robot;
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionTest {
+    
     //Instantiating photo camera with name 
     PhotonCamera camera = new PhotonCamera("photonvision");
     
