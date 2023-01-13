@@ -11,7 +11,7 @@ import java.io.IOException;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
-import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
+import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -50,8 +50,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-          SdsModuleConfigurations.MK4I_L3.getDriveReduction() *
-          SdsModuleConfigurations.MK4I_L3.getWheelDiameter() * Math.PI * Constants.DoubleDriveConstants.get("MAX_SPEED_MULTIPLIER");
+          SdsModuleConfigurations.MK4_L3.getDriveReduction() *
+          SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI * Constants.DoubleDriveConstants.get("MAX_SPEED_MULTIPLIER");
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
@@ -130,11 +130,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    * 'forwards' direction.
    */
   public void zeroGyroscope() {
-    Pigeon2Configuration config = new Pigeon2Configuration();
-    config.MountPoseYaw = 0;
-    config.MountPosePitch = 0;
-    config.MountPoseRoll = 90;
-    m_pigeon.configAllSettings(config);
+    m_pigeon.setYaw(0);
+    System.out.print("Zeroed!");
   }
   public Rotation2d getGyroscopeRotation() {
     return Rotation2d.fromDegrees(m_pigeon.getYaw());
@@ -156,6 +153,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     SmartDashboard.putNumber("X", this.getPose().getX());
     SmartDashboard.putNumber("Y", this.getPose().getY());
     SmartDashboard.putNumber("rot", this.getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("pigeon", this.getPigeonAngle());
 }
   public Pose2d getPose(){
     return mPoseEstimator.getEstimatedPosition();
@@ -185,48 +183,48 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
-    test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
+    //test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
 
-    m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
+    m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(0, 0),
             test,
-            Mk4iSwerveModuleHelper.GearRatio.L3,
+            Mk4SwerveModuleHelper.GearRatio.L3,
             15,
             Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
             fl
     );
 
-    m_frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
+    m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(2, 0),
             test,
-            Mk4iSwerveModuleHelper.GearRatio.L3,
+            Mk4SwerveModuleHelper.GearRatio.L3,
             14,
             Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
             fr
     );
-    m_backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
+    m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(4, 0),
             test,
-            Mk4iSwerveModuleHelper.GearRatio.L3,
+            Mk4SwerveModuleHelper.GearRatio.L3,
             16,
             Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
             bl
     );
-    m_backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
+    m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(6, 0),
             test,
-            Mk4iSwerveModuleHelper.GearRatio.L3,
+            Mk4SwerveModuleHelper.GearRatio.L3,
             17, 
             Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_ENCODER"),
