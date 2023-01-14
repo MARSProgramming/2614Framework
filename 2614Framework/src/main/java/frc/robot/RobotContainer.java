@@ -14,11 +14,20 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+<<<<<<< Updated upstream
 import frc.robot.commands.ResetDrivePose;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.CustomXboxController;
 import frc.robot.util.AutoChooser;
+=======
+import frc.robot.commands.DriveSnapRotation;
+import frc.robot.commands.WristCommand;
+import frc.robot.shuffleboard.ConstantsIO;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.util.CustomXboxController;
+import frc.robot.subsystems.WristMotor;
+>>>>>>> Stashed changes
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,12 +37,19 @@ import frc.robot.util.AutoChooser;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+<<<<<<< Updated upstream
   
+=======
+  private final WristMotor mWristMotor = new WristMotor();
+
+>>>>>>> Stashed changes
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
 
   ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
+
+  private final CustomXboxController mCoPilot = new CustomXboxController(1);
 
   private HashMap<String, Pose2d> mPointPositionMap;
   private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
@@ -50,6 +66,11 @@ public class RobotContainer {
             () -> -modifyAxis(mPilot.getRightY()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             mDrivetrainSubsystem.getSnapController()
     ));*/
+    mWristMotor.setDefaultCommand(new WristCommand(
+            mWristMotor,
+            () -> -modifyAxis(mCoPilot.getRightX())
+    ));
+
     mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
