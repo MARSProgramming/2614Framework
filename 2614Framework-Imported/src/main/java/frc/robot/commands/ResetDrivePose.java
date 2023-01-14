@@ -21,7 +21,7 @@ public class ResetDrivePose extends CommandBase{
     }
     @Override
     public void initialize(){
-        Rotation2d rotation = new Rotation2d(Units.radiansToDegrees(mRotation));
+        Rotation2d rotation = new Rotation2d(mRotation);
         mDrivetrainSubsystem.setPose(new Pose2d(mX, mY, rotation), rotation);
     }
     @Override
