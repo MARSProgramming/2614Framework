@@ -8,44 +8,49 @@ import edu.wpi.first.math.util.Units;
 
 public class VisionTest {
     
-    //Instantiating photo camera with name 
-    PhotonCamera camera = new PhotonCamera("photonvision");
+    private PhotonPipelineResult results; 
+    private double cameraHeight; 
+    private double targetHeight; 
+    private double cameraPitch; 
+    private double range;
+
     
-    //Getting the latest result from photonvision (contains all of the camera info)
-    PhotonPipelineResult results = camera.getLatestResult(); 
 
-    //Separating all of the relevant information that we would use: 
+    public boolean targetFound(){
+        return results.hasTargets(); 
+    }
+
+    public double getLatency(){
+        return results.getLatencyMillis(); 
+    }
 
 
-    boolean hasTarget = results.hasTargets(); 
+    public double getTargetYaw(){
+        return results.getBestTarget().getYaw(); // Yaw of the target in degrees (positive is to the right)
+    }
+    public double getTargetPitch(){
+        return results.getBestTarget().getPitch();  // Pitch of the target in degrees (positive is up)
+    }
 
-    double latency = results.getLatencyMillis(); //Latency of the camera in ms
+  /*   public double getTargetSkew(){
+        results.getBestTarget().getSkew(); 
+        //Skew of the target in degrees (counter-clockwise is positive)
+        //Not applicable for AprilTags
+    } */
 
-    /*
-     This gives you the best target, so that you can get the needed information from just htat target
-     Best target is defined by largest, smallest, highest, lowest, rightmost, leftmost, or centermost based on what was selected in camera settings, can be changed from limelight
-     dashboard 
-    */
-    PhotonTrackedTarget target = results.getBestTarget(); 
-
-    double yaw = target.getYaw(); // Yaw of the target in degrees (positive is to the right)
-    double pitch = target.getPitch();  // Pitch of the target in degrees (positive is up)
-    double skew = target.getSkew(); //Skew of the target in degrees (counter-clockwise is positive)
-
-    double area =  target.getArea(); // Area of the target as a percent (0-100); how much of the camera feed is taken up by the target box
-
-    //All of the above work for AprilTage except for getSkew(); 
+    public double getTargetArea(){
+       return results.getBestTarget().getArea(); // Area of the target as a percent (0-100)
+    }
 
     // Getting AprilTag specific data from the target: 
+    public double getTargetID(){
+        return results.getBestTarget().getFiducialId(); 
+    }
 
-    int fiducialID = target.getFiducialId(); //This gives the fiducial ID of the apriltag, or the ID it has been given (typically a number)
-    double ambiguity = target.getPoseAmbiguity(); //This gives the ambiguity for the pose of the target (how much estimated error there is for our information)
+    public double getTargetPoseAmbiguity(){
+       return results.getBestTarget().getPoseAmbiguity(); 
+    }
 
 
-    // Using available information to calculate distance to the target (assumes fixed camera height and fixed target height): 
-
-    double cameraHeight = 0; //Put in camera height here in meters
-    double targetHeight = 0; //Put in target height here in meters
-    double cameraPitch =  0; //Put in the pitch of the camera here in RADIANS
-    double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, cameraPitch, Units.degreesToRadians(results.getBestTarget().getPitch()));
+   
 }
