@@ -9,7 +9,7 @@ public class SimpleMotor extends SubsystemBase{
 
 
 
-    private TalonFX motor1Fx = new TalonFX(19);
+    private TalonFX motor1Fx = new TalonFX(16);
 
     public SimpleMotor() {
         

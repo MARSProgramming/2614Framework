@@ -4,6 +4,7 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class CustomXboxController extends XboxController{
     
@@ -41,8 +42,9 @@ public class CustomXboxController extends XboxController{
     public JoystickButton getRightBumperObject(){
         return new JoystickButton(this, XboxController.Button.kRightBumper.value);
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getLeftTriggerObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button( () -> super.getLeftTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    /// fixes deprecation
+    public edu.wpi.first.wpilibj2.command.button.Trigger getLeftTriggerObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger( () -> super.getLeftTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
     public edu.wpi.first.wpilibj2.command.button.Button getRightTriggerObject(){
         return new edu.wpi.first.wpilibj2.command.button.Button( () -> super.getRightTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
