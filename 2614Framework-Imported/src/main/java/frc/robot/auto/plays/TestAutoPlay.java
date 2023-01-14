@@ -6,18 +6,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveAtPath;
 import frc.robot.commands.ResetDrivePose;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 import frc.robot.util.AutoChooser;
 
 public class TestAutoPlay extends SequentialCommandGroup{
     private DrivetrainSubsystem mDrivetrain;
-    private Shooter mShooter;
-    public TestAutoPlay(DrivetrainSubsystem drivetrain, Intake take, Shooter shooter){
+    public TestAutoPlay(DrivetrainSubsystem drivetrain){
         mDrivetrain = drivetrain;
-        mShooter = shooter;
         addRequirements(drivetrain);
 
         Trajectory lPath1 = AutoChooser.openTrajectoryFile("test.wpilib.json");
@@ -25,7 +20,7 @@ public class TestAutoPlay extends SequentialCommandGroup{
         addCommands(
             new ResetDrivePose(mDrivetrain, 1.7, 0.8, 0),
             new ParallelCommandGroup(
-                new DriveAtPath(mDrivetrain, lPath1, new Rotation2d(3.14159), 10), new ShooterCommand(mShooter, 10.0)
+                new DriveAtPath(mDrivetrain, lPath1, new Rotation2d(3.14159), 10)
             )
             /*new ShooterCommand(mShooter, 2.0),
             new ParallelCommandGroup(

@@ -12,12 +12,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DriveSnapRotation;
+import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ZeroGyroscope;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
 
@@ -31,34 +29,31 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-  private final Intake mIntake = new Intake();
-  private final Shooter mShooter = new Shooter();
-
   ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
 
   private HashMap<String, Pose2d> mPointPositionMap;
-  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntake, mShooter);
+  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    mDrivetrainSubsystem.setDefaultCommand(new DriveSnapRotation(
+    /*mDrivetrainSubsystem.setDefaultCommand(new DriveSnapRotation(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightY()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             mDrivetrainSubsystem.getSnapController()
-    ));
-    /*mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    ));*/
+    mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));*/
+    ));
     mPointPositionMap = new HashMap<>();
     mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
     configureTeleopBindings();

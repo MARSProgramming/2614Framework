@@ -9,9 +9,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
+import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -99,6 +99,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
 
   private final Pigeon2 m_pigeon = new Pigeon2(Constants.IntegerDriveConstants.get("DRIVETRAIN_PIGEON_ID"));
   
+  private double pigeonYawOffset = 0.0;
   public double getPigeonAngle(){
         return Math.toRadians(m_pigeon.getYaw());
   }
@@ -132,7 +133,6 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    */
   public void zeroGyroscope() {
     m_pigeon.setYaw(0);
-    System.out.print("Zeroed!");
   }
   public Rotation2d getGyroscopeRotation() {
     return Rotation2d.fromDegrees(m_pigeon.getYaw());
@@ -175,57 +175,52 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
         };
   }
 
-  @Log
-  public double getFLPosition(){
-        return m_frontLeftModule.getPosition();
-  }
-
   public void createSwerveModules(double fl, double fr, double bl, double br){
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
-    //test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
+    test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
 
-    m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+    m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(0, 0),
             test,
-            Mk4SwerveModuleHelper.GearRatio.L3,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
             15,
             Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
             fl
     );
 
-    m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
+    m_frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(2, 0),
             test,
-            Mk4SwerveModuleHelper.GearRatio.L3,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
             14,
             Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
             fr
     );
-    m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+    m_backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
             tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(4, 0),
             test,
-            Mk4SwerveModuleHelper.GearRatio.L3,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
             16,
             Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
             bl
     );
-    m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
+    m_backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
             tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(6, 0),
             test,
-            Mk4SwerveModuleHelper.GearRatio.L3,
+            Mk4iSwerveModuleHelper.GearRatio.L3,
             17, 
             Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
             Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_ENCODER"),

@@ -112,4 +112,9 @@ public final class Constants {
 
         DoubleControllerConstants.put("kTriggerThreshold", 0.6);
     }
+
+    public class Arm{
+        public static final int kElbowMotorID = -1;
+        public static final int kShoulderMotorID = -1;
+    }
 }

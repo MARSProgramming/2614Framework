@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
