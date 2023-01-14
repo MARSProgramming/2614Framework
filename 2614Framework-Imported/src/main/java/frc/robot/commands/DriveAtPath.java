@@ -43,10 +43,10 @@ public class DriveAtPath extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mDrivetrainSubsystem.drive(mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()), mEndRotation));
-        SmartDashboard.putNumber("desiredX", mTrajectory.sample(mTimer.get()).poseMeters.getX());
-        SmartDashboard.putNumber("desiredY", mTrajectory.sample(mTimer.get()).poseMeters.getY());
-        SmartDashboard.putNumber("desiredrot", mTrajectory.sample(mTimer.get()).poseMeters.getRotation().getDegrees());
+        mDrivetrainSubsystem.drive(mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()+0.5), mEndRotation));
+        SmartDashboard.putNumber("desiredX", mTrajectory.sample(mTimer.get() + 0.5).poseMeters.getX());
+        SmartDashboard.putNumber("desiredY", mTrajectory.sample(mTimer.get() + 0.5).poseMeters.getY());
+        SmartDashboard.putNumber("desiredrot", mTrajectory.sample(mTimer.get() + 0.5).poseMeters.getRotation().getDegrees());
     }
 
     // Called once the command ends or is interrupted.
@@ -58,6 +58,6 @@ public class DriveAtPath extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mController.atReference() || mTimer.get() > timeout;
+        return mTimer.get() > timeout;
     }
 }

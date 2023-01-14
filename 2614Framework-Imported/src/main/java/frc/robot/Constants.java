@@ -94,7 +94,7 @@ public final class Constants {
         IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_MOTOR", 7); 
         IntegerDriveConstants.put("BACK_RIGHT_MODULE_STEER_ENCODER", 27); 
 
-        DoubleSnapConstants.put("kP", 0.3);
+        DoubleSnapConstants.put("kP", 0.4);
         DoubleSnapConstants.put("kI", 0.0);
         DoubleSnapConstants.put("kD", 0.0);
 

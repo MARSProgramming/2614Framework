@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveSnapRotation;
+import frc.robot.commands.Juke;
 import frc.robot.commands.ZeroGyroscope;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -72,7 +73,8 @@ public class RobotContainer {
    */
   public void configureTeleopBindings() {
     //mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
-    mPilot.getLeftTriggerObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
+    mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
+    mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
     //mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
     //mPilot.getRightTriggerObject().onTrue(new ShooterCommand(mShooter, 999));
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));

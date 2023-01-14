@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.ZeroSwerves;
 import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
@@ -68,6 +69,17 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
           new Translation2d(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
           // Back left
           new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          // Back right
+          new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
+  );
+
+  private final SwerveDriveKinematics mPivotKinematics = new SwerveDriveKinematics(
+          // Front left
+          new Translation2d(0.01, 0.01),
+          // Front right
+          new Translation2d(0.01, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          // Back left
+          new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, 0.01),
           // Back right
           new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
   );
@@ -141,9 +153,16 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
         SmartDashboard.putNumber("speeds", chassisSpeeds.vxMetersPerSecond);
     m_chassisSpeeds = chassisSpeeds;
   }
+
+  private boolean pivot = false;
+  @Config
+  public void setPivot(boolean v){
+        pivot = v;
+  }
+
   @Override
   public void periodic() {
-    SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    SwerveModuleState[] states = pivot ? mPivotKinematics.toSwerveModuleStates(m_chassisSpeeds) : m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
@@ -173,11 +192,6 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
                 new SwerveModulePosition(m_backLeftModule.getPosition(), new Rotation2d(m_backLeftModule.getSteerAngle())),
                 new SwerveModulePosition(m_backRightModule.getPosition(), new Rotation2d(m_backRightModule.getSteerAngle()))
         };
-  }
-
-  @Log
-  public double getFLPosition(){
-        return m_frontLeftModule.getPosition();
   }
 
   public void createSwerveModules(double fl, double fr, double bl, double br){
