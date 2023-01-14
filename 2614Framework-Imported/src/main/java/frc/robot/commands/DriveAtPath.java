@@ -4,6 +4,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -21,13 +22,14 @@ public class DriveAtPath extends CommandBase {
     private Rotation2d mEndRotation;
     private double timeout;
 
-    public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation) {
+    public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation, double timeout) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
         mController = new HolonomicDriveController(new PIDController(Constants.DoubleAutoConstants.get("holonomicXkP"), Constants.DoubleAutoConstants.get("holonomicXkI"), Constants.DoubleAutoConstants.get("holonomicXkD")), new PIDController(Constants.DoubleAutoConstants.get("holonomicYkP"), Constants.DoubleAutoConstants.get("holonomicYkI"), Constants.DoubleAutoConstants.get("holonomicYkD")), new ProfiledPIDController(Constants.DoubleAutoConstants.get("holonomicOkP"), Constants.DoubleAutoConstants.get("holonomicOkI"), Constants.DoubleAutoConstants.get("holonomicOkD"), new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration"))));
         mTimer = new Timer();
         mEndRotation = rotation;
-        timeout = 1000.0;
+        this.timeout = timeout;
+        mController.setTolerance(new Pose2d(0.01, 0.01, new Rotation2d(0.01)));
         
         addRequirements(subsystem);
     }
@@ -56,6 +58,6 @@ public class DriveAtPath extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.sample(mTrajectory.getTotalTimeSeconds()).poseMeters.getTranslation()) < 0.01 || mTimer.get() > timeout;
+        return mController.atReference() || mTimer.get() > timeout;
     }
 }

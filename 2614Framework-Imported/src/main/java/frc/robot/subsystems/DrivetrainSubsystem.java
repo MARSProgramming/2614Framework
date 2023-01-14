@@ -75,6 +75,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public void zeroSwerves(boolean run) {
     if(run){
         File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
+        System.out.println(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
         try{
             swerveZeros.createNewFile();
             FileWriter writer = new FileWriter(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
