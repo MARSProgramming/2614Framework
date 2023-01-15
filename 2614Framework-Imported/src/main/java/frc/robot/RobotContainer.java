@@ -88,8 +88,11 @@ public class RobotContainer {
     mPilot.getRightBumperObject().whileTrue(new Invert11Command(mInvert11));
     mPilot.getLeftBumperObject().whileTrue(new Backward12Command(mBackward12));
 
-    //mRotate11.setDefaultCommand(new Rotate11Command(mRotate11));
+    mRotate11.setDefaultCommand(
+      mRotate11.RunBothMotors(
+        () -> -modifyAxis(mPilot.getLeftY()), () -> -modifyAxis(mPilot.getLeftX())));
 
+        //            () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,            
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
   } 
