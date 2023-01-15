@@ -39,8 +39,6 @@ public class Forward12 extends SubsystemBase {
     
 
 
-
-
     public CommandBase RunBothMotors(DoubleSupplier voltage1, DoubleSupplier voltage2) {
         return runOnce(
             () -> {
