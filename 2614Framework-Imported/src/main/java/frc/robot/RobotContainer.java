@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ZeroGyroscope;
-import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
@@ -29,7 +28,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-  ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
 

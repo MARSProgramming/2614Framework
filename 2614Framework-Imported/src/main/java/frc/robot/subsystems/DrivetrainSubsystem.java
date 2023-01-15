@@ -51,7 +51,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
           SdsModuleConfigurations.MK4_L3.getDriveReduction() *
-          SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI * Constants.DoubleDriveConstants.get("MAX_SPEED_MULTIPLIER");
+          SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI * Constants.Drive.MAX_SPEED_MULTIPLIER;
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
@@ -59,17 +59,17 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    */
   // Here we calculate the theoretical maximum angular velocity. You can also replace this with a measured amount.
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
-          Math.hypot(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0);
+          Math.hypot(Constants.Drive.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drive.DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
           // Front left
-          new Translation2d(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          new Translation2d(Constants.Drive.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drive.DRIVETRAIN_WHEELBASE_METERS / 2.0),
           // Front right
-          new Translation2d(Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          new Translation2d(Constants.Drive.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drive.DRIVETRAIN_WHEELBASE_METERS / 2.0),
           // Back left
-          new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0),
+          new Translation2d(-Constants.Drive.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drive.DRIVETRAIN_WHEELBASE_METERS / 2.0),
           // Back right
-          new Translation2d(-Constants.DoubleDriveConstants.get("DRIVETRAIN_TRACKWIDTH_METERS") / 2.0, -Constants.DoubleDriveConstants.get("DRIVETRAIN_WHEELBASE_METERS") / 2.0)
+          new Translation2d(-Constants.Drive.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drive.DRIVETRAIN_WHEELBASE_METERS / 2.0)
   );
 
   public void zeroSwerves(boolean run) {
@@ -79,17 +79,17 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
         try{
             swerveZeros.createNewFile();
             FileWriter writer = new FileWriter(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
-            writer.write(Math.toDegrees(m_frontLeftModule.getSteerAngle()-Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"))%360 + "\n");
-            writer.write(Math.toDegrees(m_frontRightModule.getSteerAngle()-Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"))%360 + "\n");
-            writer.write(Math.toDegrees(m_backLeftModule.getSteerAngle()-Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"))%360 + "\n");
-            writer.write(Math.toDegrees(m_backRightModule.getSteerAngle()-Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"))%360 + "\n");
+            writer.write(Math.toDegrees(m_frontLeftModule.getSteerAngle()-Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET)%360 + "\n");
+            writer.write(Math.toDegrees(m_frontRightModule.getSteerAngle()-Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET)%360 + "\n");
+            writer.write(Math.toDegrees(m_backLeftModule.getSteerAngle()-Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET)%360 + "\n");
+            writer.write(Math.toDegrees(m_backRightModule.getSteerAngle()-Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET)%360 + "\n");
             writer.close();
 
             /*Constants.DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -m_frontLeftModule.getSteerAngle());
             Constants.DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -m_frontRightModule.getSteerAngle());
             Constants.DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -m_backLeftModule.getSteerAngle());
             Constants.DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -m_backRightModule.getSteerAngle()); 
-            createSwerveModules(Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"));*/
+            createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET);*/
         }
         catch(IOException e){
             System.out.println("File could not be found when writing to swerve zeros");
@@ -97,7 +97,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     }
   }
 
-  private final Pigeon2 m_pigeon = new Pigeon2(Constants.IntegerDriveConstants.get("DRIVETRAIN_PIGEON_ID"));
+  private final Pigeon2 m_pigeon = new Pigeon2(Constants.Drive.DRIVETRAIN_PIGEON_ID, "Drivetrain");
   
   private double pigeonYawOffset = 0.0;
   public double getPigeonAngle(){
@@ -116,13 +116,13 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public DrivetrainSubsystem() {
-    createSwerveModules(Constants.DoubleDriveConstants.get("FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET"));
-    Constants.ConstantsTab.getLayout("Drive", BuiltInLayouts.kList).add(new ZeroSwerves(this));
+    createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET, Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET, Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET, Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET);
+    Shuffleboard.getTab("Drive").add(new ZeroSwerves(this));
 
-    mSnapController = new ProfiledPIDController(Constants.DoubleSnapConstants.get("kP"),
-        Constants.DoubleSnapConstants.get("kI"), 
-        Constants.DoubleSnapConstants.get("kD"),
-        new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration")));
+    mSnapController = new ProfiledPIDController(Constants.Drive.kP,
+        Constants.Drive.kI, 
+        Constants.Drive.kD,
+        new TrapezoidProfile.Constraints(Constants.Auto.holonomicOMaxVelocity, Constants.Auto.holonomicOMaxAcceleration));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
     mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(m_pigeon.getYaw()), getSwerveModulePositions(), new Pose2d());
     
@@ -179,7 +179,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     Mk4ModuleConfiguration test = new Mk4ModuleConfiguration();
-    test.setCanivoreName(Constants.StringDriveConstants.get("kDriveCANivore"));
+    test.setCanivoreName(Constants.Drive.kDriveCANivore);
 
     m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
             tab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -188,8 +188,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
             test,
             Mk4iSwerveModuleHelper.GearRatio.L3,
             15,
-            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_MOTOR"),
-            Constants.IntegerDriveConstants.get("FRONT_LEFT_MODULE_STEER_ENCODER"),
+            Constants.Drive.FRONT_LEFT_MODULE_STEER_MOTOR,
+            Constants.Drive.FRONT_LEFT_MODULE_STEER_ENCODER,
             fl
     );
 
@@ -200,8 +200,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
             test,
             Mk4iSwerveModuleHelper.GearRatio.L3,
             14,
-            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_MOTOR"),
-            Constants.IntegerDriveConstants.get("FRONT_RIGHT_MODULE_STEER_ENCODER"),
+            Constants.Drive.FRONT_RIGHT_MODULE_STEER_MOTOR,
+            Constants.Drive.FRONT_RIGHT_MODULE_STEER_ENCODER,
             fr
     );
     m_backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
@@ -211,8 +211,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
             test,
             Mk4iSwerveModuleHelper.GearRatio.L3,
             16,
-            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_MOTOR"),
-            Constants.IntegerDriveConstants.get("BACK_LEFT_MODULE_STEER_ENCODER"),
+            Constants.Drive.BACK_LEFT_MODULE_STEER_MOTOR,
+            Constants.Drive.BACK_LEFT_MODULE_STEER_ENCODER,
             bl
     );
     m_backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
@@ -222,8 +222,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
             test,
             Mk4iSwerveModuleHelper.GearRatio.L3,
             17, 
-            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_MOTOR"),
-            Constants.IntegerDriveConstants.get("BACK_RIGHT_MODULE_STEER_ENCODER"),
+            Constants.Drive.BACK_RIGHT_MODULE_STEER_MOTOR,
+            Constants.Drive.BACK_RIGHT_MODULE_STEER_ENCODER,
             br
     );
   }

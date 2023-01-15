@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,7 +43,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    ConstantsIO.getInstance().periodic();
     Logger.updateEntries();
     //SmartDashboard.putNumber("psi", mCompressor.getPressure());
     //SmartDashboard.putNumber("current", mCompressor.getCurrent());
@@ -80,14 +83,24 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.configureTeleopBindings();
-    
+    srx.setNeutralMode(NeutralMode.Brake);
+    srx2.setNeutralMode(NeutralMode.Brake);
+    srx2.follow(srx);
   }
 
   //TalonFX thej = new TalonFX(14, "Drivetrain");
   /** This function is called periodically during operator control. */
+  TalonSRX srx = new TalonSRX(, "Drivetrain");
+  TalonSRX srx2 = new TalonSRX(, "Drivetrain");
   @Override
   public void teleopPeriodic() {
     //thej.set(ControlMode.PercentOutput, 0.5);
+    if(m_robotContainer.getPilot().getLeftTriggerAxis() > 0.5){
+      srx.set(ControlMode.PercentOutput, m_robotContainer.getPilot().getLeftTriggerAxis());
+    }
+    else{
+      srx.set(ControlMode.PercentOutput, 0.0);
+    }
   }
 
   @Override

@@ -25,7 +25,7 @@ public class DriveAtPath extends CommandBase {
     public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation, double timeout) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
-        mController = new HolonomicDriveController(new PIDController(Constants.DoubleAutoConstants.get("holonomicXkP"), Constants.DoubleAutoConstants.get("holonomicXkI"), Constants.DoubleAutoConstants.get("holonomicXkD")), new PIDController(Constants.DoubleAutoConstants.get("holonomicYkP"), Constants.DoubleAutoConstants.get("holonomicYkI"), Constants.DoubleAutoConstants.get("holonomicYkD")), new ProfiledPIDController(Constants.DoubleAutoConstants.get("holonomicOkP"), Constants.DoubleAutoConstants.get("holonomicOkI"), Constants.DoubleAutoConstants.get("holonomicOkD"), new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration"))));
+        mController = new HolonomicDriveController(new PIDController(Constants.Auto.holonomicXkP, Constants.Auto.holonomicXkI, Constants.Auto.holonomicXkD), new PIDController(Constants.Auto.holonomicYkP, Constants.Auto.holonomicYkI, Constants.Auto.holonomicYkD), new ProfiledPIDController(Constants.Auto.holonomicOkP, Constants.Auto.holonomicOkI, Constants.Auto.holonomicOkD, new TrapezoidProfile.Constraints(Constants.Auto.holonomicOMaxVelocity, Constants.Auto.holonomicOMaxAcceleration)));
         mTimer = new Timer();
         mEndRotation = rotation;
         this.timeout = timeout;
