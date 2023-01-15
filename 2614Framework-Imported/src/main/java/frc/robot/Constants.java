@@ -54,27 +54,10 @@ public final class Constants {
             public static final double kI = 0.0;
             public static final double kD = 0.0;
 
-            public static double FRONT_LEFT_MODULE_STEER_OFFSET = 0.0;
-            public static double FRONT_RIGHT_MODULE_STEER_OFFSET = 0.0;
-            public static double BACK_LEFT_MODULE_STEER_OFFSET = 0.0;
-            public static double BACK_RIGHT_MODULE_STEER_OFFSET = 0.0;
-        }
-
-        static{
-            File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
-            if (swerveZeros.exists()) {
-                try{
-                    Scanner sc = new Scanner(swerveZeros);
-                    Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
-                    Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
-                    Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
-                    Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine())); 
-                    sc.close();
-                }
-                catch(FileNotFoundException e){
-                    System.out.println("Swerve Zeros file not found");
-                }
-            }
+            public static double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
+            public static double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
+            public static double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
+            public static double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
         }
 
     public static class Auto{

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.shuffleboard.ConstantsIO;
 import io.github.oblarg.oblog.Logger;
 
 /**
@@ -86,16 +85,18 @@ public class Robot extends TimedRobot {
     srx.setNeutralMode(NeutralMode.Brake);
     srx2.setNeutralMode(NeutralMode.Brake);
     srx2.follow(srx);
+    srx2.setInverted(true);
+    srx.setInverted(true);
   }
 
   //TalonFX thej = new TalonFX(14, "Drivetrain");
   /** This function is called periodically during operator control. */
-  TalonSRX srx = new TalonSRX(, "Drivetrain");
-  TalonSRX srx2 = new TalonSRX(, "Drivetrain");
+  TalonSRX srx = new TalonSRX(0);
+  TalonSRX srx2 = new TalonSRX(1);
   @Override
   public void teleopPeriodic() {
     //thej.set(ControlMode.PercentOutput, 0.5);
-    if(m_robotContainer.getPilot().getLeftTriggerAxis() > 0.5){
+    if(m_robotContainer.getPilot().getLeftTriggerAxis() > 0.2){
       srx.set(ControlMode.PercentOutput, m_robotContainer.getPilot().getLeftTriggerAxis());
     }
     else{

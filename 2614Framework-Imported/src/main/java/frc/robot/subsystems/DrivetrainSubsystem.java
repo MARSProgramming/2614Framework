@@ -5,12 +5,11 @@
 package frc.robot.subsystems;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
-import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
@@ -34,7 +33,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.ZeroSwerves;
 import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Log;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public static final double MAX_VOLTAGE = 12.0;
@@ -50,8 +48,8 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-          SdsModuleConfigurations.MK4_L3.getDriveReduction() *
-          SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI * Constants.Drive.MAX_SPEED_MULTIPLIER;
+          SdsModuleConfigurations.MK4I_L3.getDriveReduction() *
+          SdsModuleConfigurations.MK4I_L3.getWheelDiameter() * Math.PI * Constants.Drive.MAX_SPEED_MULTIPLIER;
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
@@ -73,7 +71,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   );
 
   public void zeroSwerves(boolean run) {
-    if(run){
+   /*  if(run){
         File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
         System.out.println(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
         try{
@@ -85,19 +83,19 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
             writer.write(Math.toDegrees(m_backRightModule.getSteerAngle()-Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET)%360 + "\n");
             writer.close();
 
-            /*Constants.DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -m_frontLeftModule.getSteerAngle());
+            Constants.DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -m_frontLeftModule.getSteerAngle());
             Constants.DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -m_frontRightModule.getSteerAngle());
             Constants.DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -m_backLeftModule.getSteerAngle());
             Constants.DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -m_backRightModule.getSteerAngle()); 
-            createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET);*/
+            createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET);
         }
         catch(IOException e){
             System.out.println("File could not be found when writing to swerve zeros");
         }
-    }
+    }*/
   }
 
-  private final Pigeon2 m_pigeon = new Pigeon2(Constants.Drive.DRIVETRAIN_PIGEON_ID, "Drivetrain");
+  private final Pigeon2 m_pigeon = new Pigeon2(Constants.Drive.DRIVETRAIN_PIGEON_ID);
   
   private double pigeonYawOffset = 0.0;
   public double getPigeonAngle(){
@@ -116,6 +114,21 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public DrivetrainSubsystem() {
+        File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
+            if (swerveZeros.exists()) {
+                try{
+                    Scanner sc = new Scanner(swerveZeros);
+                    Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
+                    Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
+                    Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
+                    Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine())); 
+                    sc.close();
+                }
+                catch(FileNotFoundException e){
+                    System.out.println("Swerve Zeros file not found");
+                }
+            }
+
     createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET, Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET, Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET, Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET);
     Shuffleboard.getTab("Drive").add(new ZeroSwerves(this));
 
