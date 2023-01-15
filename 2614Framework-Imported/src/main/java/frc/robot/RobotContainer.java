@@ -12,8 +12,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.Backward12Command;
 import frc.robot.commands.DriveSnapRotation;
 import frc.robot.commands.Forward12Command;
+import frc.robot.commands.Invert11Command;
 import frc.robot.commands.Juke;
 import frc.robot.commands.Rotate11Command;
 import frc.robot.commands.ZeroGyroscope;
@@ -21,7 +23,6 @@ import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Forward12;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Rotate11;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
@@ -39,7 +40,9 @@ public class RobotContainer {
   private final Intake mIntake = new Intake();
   private final Shooter mShooter = new Shooter();
   private final Forward12 mForward12 = new Forward12();
-  private final Rotate11 mRotate11 = new Rotate11();
+  private final Forward12 mRotate11 = new Forward12();
+  private final Forward12 mInvert11 = new Forward12();
+  private final Forward12 mBackward12 = new Forward12();
   ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
@@ -81,10 +84,15 @@ public class RobotContainer {
     //mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
     //mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
     mPilot.getLeftTriggerObject().whileTrue(new Forward12Command(mForward12));
-    mPilot.getRightTriggerObject().onTrue(new Rotate11Command(mRotate11));
+    mPilot.getRightTriggerObject().whileTrue(new Rotate11Command(mRotate11));
+    mPilot.getRightBumperObject().whileTrue(new Invert11Command(mInvert11));
+    mPilot.getLeftBumperObject().whileTrue(new Backward12Command(mBackward12));
+
+    //mRotate11.setDefaultCommand(new Rotate11Command(mRotate11));
+
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
-  }
+  } 
 
   public void configureTestBindings(){
     System.out.println("Test Bindings Configured");

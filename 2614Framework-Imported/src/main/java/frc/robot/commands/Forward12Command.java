@@ -20,12 +20,12 @@ public class Forward12Command extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mForward12.RunMotor(0.4);
+        mForward12.RunMotor1(0.4);
     }        
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mForward12.RunMotor(0);
+        mForward12.RunMotor1(0);
     }
   
     
