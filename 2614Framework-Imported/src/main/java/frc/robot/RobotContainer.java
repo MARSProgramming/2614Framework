@@ -14,14 +14,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Backward12Command;
 import frc.robot.commands.DriveSnapRotation;
+<<<<<<< HEAD
 import frc.robot.commands.Forward12Command;
 import frc.robot.commands.Invert11Command;
+=======
+>>>>>>> parent of 7d476fc (changed IDs, added code for rotating)
 import frc.robot.commands.Juke;
-import frc.robot.commands.Rotate11Command;
 import frc.robot.commands.ZeroGyroscope;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Forward12;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.AutoChooser;
@@ -39,10 +40,14 @@ public class RobotContainer {
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
   private final Intake mIntake = new Intake();
   private final Shooter mShooter = new Shooter();
+<<<<<<< HEAD
   private final Forward12 mForward12 = new Forward12();
   private final Forward12 mRotate11 = new Forward12();
   private final Forward12 mInvert11 = new Forward12();
   private final Forward12 mBackward12 = new Forward12();
+=======
+
+>>>>>>> parent of 7d476fc (changed IDs, added code for rotating)
   ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
@@ -81,6 +86,7 @@ public class RobotContainer {
    */
   public void configureTeleopBindings() {
     //mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
+<<<<<<< HEAD
     //mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
     //mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
     mPilot.getLeftTriggerObject().whileTrue(new Forward12Command(mForward12));
@@ -93,6 +99,12 @@ public class RobotContainer {
         () -> -modifyAxis(mPilot.getLeftY()), () -> -modifyAxis(mPilot.getLeftX())));
 
         //            () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,            
+=======
+    mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
+    mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
+    //mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
+    //mPilot.getRightTriggerObject().onTrue(new ShooterCommand(mShooter, 999));
+>>>>>>> parent of 7d476fc (changed IDs, added code for rotating)
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
   } 
