@@ -1,18 +1,10 @@
 package frc.robot;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.math.util.Units;
 
 public class VisionTest {
     
     private PhotonPipelineResult results; 
-    private double cameraHeight; 
-    private double targetHeight; 
-    private double cameraPitch; 
-    private double range;
 
     
 

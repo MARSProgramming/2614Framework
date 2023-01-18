@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
@@ -35,7 +34,6 @@ import frc.robot.Constants;
 import frc.robot.commands.ZeroSwerves;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public static final double MAX_VOLTAGE = 12.0;

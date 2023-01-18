@@ -41,34 +41,34 @@ public class CustomXboxController extends XboxController{
     public JoystickButton getRightBumperObject(){
         return new JoystickButton(this, XboxController.Button.kRightBumper.value);
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getLeftTriggerObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button( () -> super.getLeftTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    public edu.wpi.first.wpilibj2.command.button.Trigger getLeftTriggerObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger( () -> super.getLeftTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getRightTriggerObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button( () -> super.getRightTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    public edu.wpi.first.wpilibj2.command.button.Trigger getRightTriggerObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger( () -> super.getRightTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getLeftXJoystickObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getLeftX() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    public edu.wpi.first.wpilibj2.command.button.Trigger getLeftXJoystickObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getLeftX() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getLeftYJoystickObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getLeftY() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    public edu.wpi.first.wpilibj2.command.button.Trigger getLeftYJoystickObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getLeftY() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getRightXJoystickObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getRightX() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    public edu.wpi.first.wpilibj2.command.button.Trigger getRightXJoystickObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getRightX() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getRightYJoystickObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getRightY() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
+    public edu.wpi.first.wpilibj2.command.button.Trigger getRightYJoystickObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getRightY() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getLeftDPadObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getPOV() == 270);
+    public edu.wpi.first.wpilibj2.command.button.Trigger getLeftDPadObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getPOV() == 270);
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getRightDPadObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getPOV() == 90);
+    public edu.wpi.first.wpilibj2.command.button.Trigger getRightDPadObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getPOV() == 90);
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getUpDPadObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getPOV() == 0);
+    public edu.wpi.first.wpilibj2.command.button.Trigger getUpDPadObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getPOV() == 0);
     }
-    public edu.wpi.first.wpilibj2.command.button.Button getDownDPadObject(){
-        return new edu.wpi.first.wpilibj2.command.button.Button(() -> super.getPOV() == 180);
+    public edu.wpi.first.wpilibj2.command.button.Trigger getDownDPadObject(){
+        return new edu.wpi.first.wpilibj2.command.button.Trigger(() -> super.getPOV() == 180);
     }
 }
