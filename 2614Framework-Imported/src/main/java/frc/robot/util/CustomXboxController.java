@@ -41,6 +41,10 @@ public class CustomXboxController extends XboxController{
     public JoystickButton getRightBumperObject(){
         return new JoystickButton(this, XboxController.Button.kRightBumper.value);
     }
+<<<<<<< HEAD
+=======
+    /// fixes deprecation
+>>>>>>> 3df675006d9ad548b4995a7c425e3c5bcf6ebc24
     public edu.wpi.first.wpilibj2.command.button.Trigger getLeftTriggerObject(){
         return new edu.wpi.first.wpilibj2.command.button.Trigger( () -> super.getLeftTriggerAxis() >= Constants.DoubleControllerConstants.get("kTriggerThreshold"));
     }
