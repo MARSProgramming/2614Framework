@@ -31,7 +31,6 @@ public class RobotContainer {
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-  private final IntakeCommand mIntakeCommand = new IntakeCommand(mIntakeSubsystem);
   private final CustomXboxController mPilot = new CustomXboxController(0);
 
 

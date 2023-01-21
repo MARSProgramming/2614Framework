@@ -29,9 +29,4 @@ public class IntakeCommand extends CommandBase {
     mIntakeSub.RunMotors(0);
   }
 
-
-
-    
-
-
 }
