@@ -12,15 +12,21 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DriveSnapRotation;
-import frc.robot.commands.Juke;
-import frc.robot.commands.ZeroGyroscope;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.ResetDrivePose;
 import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
+import frc.robot.util.AutoChooser;
+import frc.robot.commands.DriveSnapRotation;
+import frc.robot.commands.WristCommand;
+import frc.robot.shuffleboard.ConstantsIO;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.util.CustomXboxController;
+import frc.robot.subsystems.WristMotor;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,39 +36,46 @@ import frc.robot.util.CustomXboxController;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
   
-  private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-  private final Intake mIntake = new Intake();
-  private final Shooter mShooter = new Shooter();
+  private final WristMotor mWristMotor = new WristMotor();
 
-  ConstantsIO mConstantsIO = ConstantsIO.getInstance();
+  //private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
 
-  private final CustomXboxController mPilot = new CustomXboxController(0);
+  //ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
-  private HashMap<String, Pose2d> mPointPositionMap;
-  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntake, mShooter);
+  //private final CustomXboxController mPilot = new CustomXboxController(0);
+
+  private final CustomXboxController mCoPilot = new CustomXboxController(1);
+  //private final CommandXboxController mCoPilot = new CommandXboxController(1);
+  //private HashMap<String, Pose2d> mPointPositionMap;
+  //private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    mDrivetrainSubsystem.setDefaultCommand(new DriveSnapRotation(
+    /*mDrivetrainSubsystem.setDefaultCommand(new DriveSnapRotation(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             () -> -modifyAxis(mPilot.getRightY()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             mDrivetrainSubsystem.getSnapController()
-    ));
-    /*mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-            mDrivetrainSubsystem,
-            () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));*/
-    mPointPositionMap = new HashMap<>();
-    mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
-    configureTeleopBindings();
+    mCoPilot.getRightTriggerObject().whileTrue(new WristCommand(
+            mWristMotor,
+            () -> -modifyAxis(0.5)
+    ));
+
+    //mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+            //mDrivetrainSubsystem,
+            //() -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            //() -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            //() -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+   // ));
+    //mPointPositionMap = new HashMap<>();
+    //mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
   }
 
   /**
@@ -72,16 +85,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureTeleopBindings() {
-    //mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
-    mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
-    mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
-    //mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
-    //mPilot.getRightTriggerObject().onTrue(new ShooterCommand(mShooter, 999));
+   // mPilot.getYButtonObject().whenPressed(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
   }
 
   public void configureTestBindings(){
+    //new Button(mPilot::getYButton)
+      //      .whenPressed(mDrivetrainSubsystem::zeroGyroscope);
     System.out.println("Test Bindings Configured");
   }
   /**
@@ -89,9 +100,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
+   public Command getAutonomousCommand() {
+      return null;
+  //   //return autoChooser.getSelected();
+   }
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
@@ -108,7 +120,7 @@ public class RobotContainer {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.1);
+    value = deadband(value, 0.05);
 
     // Square the axis
     value = Math.copySign(value * value, value);
@@ -119,7 +131,7 @@ public class RobotContainer {
     return value;
   }
 
-  public XboxController getPilot(){
-    return mPilot;
+  //public XboxController getPilot(){
+   // return mPilot;
   }
-}
+//}
