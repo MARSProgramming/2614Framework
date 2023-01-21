@@ -93,6 +93,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   TalonSRX srx = new TalonSRX(0);
   TalonSRX srx2 = new TalonSRX(13);
+
+  
   @Override
   public void teleopPeriodic() {
     //thej.set(ControlMode.PercentOutput, 0.5);
