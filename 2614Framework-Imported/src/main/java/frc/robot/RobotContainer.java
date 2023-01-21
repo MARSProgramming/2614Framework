@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ZeroGyroscope;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
 
@@ -28,8 +30,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-
+  private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  private final IntakeCommand mIntakeCommand = new IntakeCommand(mIntakeSubsystem);
   private final CustomXboxController mPilot = new CustomXboxController(0);
+
 
   private HashMap<String, Pose2d> mPointPositionMap;
   private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
@@ -67,7 +71,7 @@ public class RobotContainer {
     //mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
     mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
     //mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
-    //mPilot.getRightTriggerObject().onTrue(new ShooterCommand(mShooter, 999));
+    mPilot.getRightTriggerObject().onTrue(new IntakeCommand(mIntakeSubsystem));
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
     System.out.println("Teleop Bindings Configured");
   }
