@@ -112,7 +112,6 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public DrivetrainSubsystem() {
-        Shuffleboard.getTab("DrivetrainSubsystem").add(new ZeroSwerves(this));
         double fr = 0;
         double fl = 0;
         double br = 0;
