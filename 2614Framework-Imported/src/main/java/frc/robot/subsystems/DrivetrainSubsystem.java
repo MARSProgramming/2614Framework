@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.ctre.phoenix.sensors.Pigeon2;
@@ -32,6 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.ZeroSwerves;
+import frc.robot.util.MoreMath;
 import io.github.oblarg.oblog.Loggable;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
@@ -70,29 +73,24 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
           new Translation2d(-Constants.Drive.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drive.DRIVETRAIN_WHEELBASE_METERS / 2.0)
   );
 
+
   public void zeroSwerves(boolean run) {
-   /*  if(run){
+   if(run){
         File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
         System.out.println(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
         try{
             swerveZeros.createNewFile();
             FileWriter writer = new FileWriter(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
-            writer.write(Math.toDegrees(m_frontLeftModule.getSteerAngle()-Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET)%360 + "\n");
-            writer.write(Math.toDegrees(m_frontRightModule.getSteerAngle()-Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET)%360 + "\n");
-            writer.write(Math.toDegrees(m_backLeftModule.getSteerAngle()-Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET)%360 + "\n");
-            writer.write(Math.toDegrees(m_backRightModule.getSteerAngle()-Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET)%360 + "\n");
+            writer.write(MoreMath.floorMod(Math.toDegrees(m_frontLeftModule.getSteerAngle()-Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET), 360) + "\n");
+            writer.write(MoreMath.floorMod(Math.toDegrees(m_frontRightModule.getSteerAngle()-Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET), 360) + "\n");
+            writer.write(MoreMath.floorMod(Math.toDegrees(m_backLeftModule.getSteerAngle()-Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET), 360) + "\n");
+            writer.write(MoreMath.floorMod(Math.toDegrees(m_backRightModule.getSteerAngle()-Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET), 360) + "\n");
             writer.close();
-
-            Constants.DoubleDriveConstants.put("FRONT_LEFT_MODULE_STEER_OFFSET", -m_frontLeftModule.getSteerAngle());
-            Constants.DoubleDriveConstants.put("FRONT_RIGHT_MODULE_STEER_OFFSET", -m_frontRightModule.getSteerAngle());
-            Constants.DoubleDriveConstants.put("BACK_LEFT_MODULE_STEER_OFFSET", -m_backLeftModule.getSteerAngle());
-            Constants.DoubleDriveConstants.put("BACK_RIGHT_MODULE_STEER_OFFSET", -m_backRightModule.getSteerAngle()); 
-            createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("FRONT_RIGHT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_LEFT_MODULE_STEER_OFFSET"), Constants.DoubleDriveConstants.get("BACK_RIGHT_MODULE_STEER_OFFSET);
         }
         catch(IOException e){
             System.out.println("File could not be found when writing to swerve zeros");
         }
-    }*/
+    }
   }
 
   private final Pigeon2 m_pigeon = new Pigeon2(Constants.Drive.DRIVETRAIN_PIGEON_ID);
@@ -114,23 +112,37 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public DrivetrainSubsystem() {
+        Shuffleboard.getTab("DrivetrainSubsystem").add(new ZeroSwerves(this));
+        double fr = 0;
+        double fl = 0;
+        double br = 0;
+        double bl = 0;
         File swerveZeros = new File(Filesystem.getDeployDirectory().toPath().resolve("constants/SwerveZeros.txt").toString());
             if (swerveZeros.exists()) {
                 try{
                     Scanner sc = new Scanner(swerveZeros);
-                    Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
-                    Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
-                    Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine()));
-                    Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(Double.parseDouble(sc.nextLine())); 
+                    fl = -Math.toRadians(Double.parseDouble(sc.nextLine()));
+                    fr = -Math.toRadians(Double.parseDouble(sc.nextLine()));
+                    bl = -Math.toRadians(Double.parseDouble(sc.nextLine()));
+                    br = -Math.toRadians(Double.parseDouble(sc.nextLine())); 
                     sc.close();
+                    System.out.println(fl);
+                    System.out.println(fr);
+                    System.out.println(bl);
+                    System.out.println(br);
                 }
                 catch(FileNotFoundException e){
                     System.out.println("Swerve Zeros file not found");
                 }
             }
+            else{
+                fr = Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET;
+                fl = Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET;
+                br = Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET;
+                bl = Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET;
+            }
 
-    createSwerveModules(Constants.Drive.FRONT_LEFT_MODULE_STEER_OFFSET, Constants.Drive.FRONT_RIGHT_MODULE_STEER_OFFSET, Constants.Drive.BACK_LEFT_MODULE_STEER_OFFSET, Constants.Drive.BACK_RIGHT_MODULE_STEER_OFFSET);
-    Shuffleboard.getTab("Drive").add(new ZeroSwerves(this));
+    createSwerveModules(fl, fr, bl, br);
 
     mSnapController = new ProfiledPIDController(Constants.Drive.kP,
         Constants.Drive.kI, 
