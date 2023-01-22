@@ -4,10 +4,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeCommand extends CommandBase {
+public class IntakeRunCommand extends CommandBase {
     private IntakeSubsystem mIntakeSub;
 
-    public IntakeCommand(IntakeSubsystem i) {
+    public IntakeRunCommand(IntakeSubsystem i) {
         mIntakeSub = i;
         addRequirements(i);
 
@@ -20,7 +20,6 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mIntakeSub.extend();
     mIntakeSub.RunMotors(0.4);
   }
 
@@ -28,7 +27,6 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     mIntakeSub.RunMotors(0);
-    mIntakeSub.retract();
   }
 
 }

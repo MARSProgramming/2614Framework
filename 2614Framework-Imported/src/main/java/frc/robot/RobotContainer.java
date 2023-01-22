@@ -9,7 +9,9 @@ import java.util.HashMap;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeRunCommand;
+import frc.robot.commands.IntakeToggleCommand;
 import frc.robot.commands.TestButtons;
 import frc.robot.commands.ZeroGyroscope;
 import frc.robot.commands.ZeroSwerves;
@@ -34,7 +38,7 @@ import io.github.oblarg.oblog.annotations.Config;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  
+  Compressor mCompressor = new Compressor(63, PneumaticsModuleType.REVPH);
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   private final CustomXboxController mPilot = new CustomXboxController(0);
@@ -54,6 +58,7 @@ public class RobotContainer {
             () -> -modifyAxis(mPilot.getRightY()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             mDrivetrainSubsystem.getSnapController()
     ));*/
+    mCompressor.enableAnalog(100, 110);
     mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
@@ -84,6 +89,8 @@ public class RobotContainer {
   }
 
   public void configureTestBindings(){
+    mPilot.getRightTriggerObject().onTrue(new IntakeRunCommand(mIntakeSubsystem));
+    mPilot.getBButtonObject().onTrue(new IntakeToggleCommand(mIntakeSubsystem));
     System.out.println("Test Bindings Configured");
   }
   /**
