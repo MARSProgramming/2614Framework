@@ -1,13 +1,15 @@
 package frc.robot.commands;
 
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeRunCommand extends CommandBase {
     private IntakeSubsystem mIntakeSub;
-
-    public IntakeRunCommand(IntakeSubsystem i) {
+    private DoubleSupplier output;
+    public IntakeRunCommand(IntakeSubsystem i, DoubleSupplier ds) {
         mIntakeSub = i;
         addRequirements(i);
 
@@ -20,7 +22,7 @@ public class IntakeRunCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mIntakeSub.RunMotors(0.4);
+    mIntakeSub.RunMotors(output.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

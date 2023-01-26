@@ -15,18 +15,18 @@ public class IntakeToggleCommand extends CommandBase {
 
     @Override
   public void initialize() {
+    System.out.println("Extended");
+    mIntakeSub.toggle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mIntakeSub.toggle();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
   }
 
 }

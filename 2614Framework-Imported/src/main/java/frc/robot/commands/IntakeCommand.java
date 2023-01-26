@@ -15,12 +15,12 @@ public class IntakeCommand extends CommandBase {
 
     @Override
   public void initialize() {
+    mIntakeSub.extend();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mIntakeSub.extend();
     mIntakeSub.RunMotors(0.4);
   }
 
