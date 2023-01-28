@@ -11,6 +11,7 @@ public class IntakeRunCommand extends CommandBase {
     private DoubleSupplier output;
     public IntakeRunCommand(IntakeSubsystem i, DoubleSupplier ds) {
         mIntakeSub = i;
+        output = ds;
         addRequirements(i);
 
     }
