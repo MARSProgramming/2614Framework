@@ -15,15 +15,16 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveSnapRotation;
-import frc.robot.commands.Juke;
+//import frc.robot.commands.Juke;
 import frc.robot.commands.ZeroGyroscope;
-import frc.robot.shuffleboard.ConstantsIO;
+//import frc.robot.shuffleboard.ConstantsIO;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Intake;
+//import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
+//import frc.robot.subsystems.Shooter;
 import frc.robot.util.AutoChooser;
 import frc.robot.util.CustomXboxController;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,17 +36,17 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-  private final Intake mIntake = new Intake();
-  private final Shooter mShooter = new Shooter();
+  //private final Intake mIntake = new Intake();
+  //private final Shooter mShooter = new Shooter();
   private final Limelight mLimelight = new Limelight(); 
   
 
-  ConstantsIO mConstantsIO = ConstantsIO.getInstance();
+//  ConstantsIO mConstantsIO = ConstantsIO.getInstance();
 
   private final CustomXboxController mPilot = new CustomXboxController(0);
 
   private HashMap<String, Pose2d> mPointPositionMap;
-  private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntake, mShooter);
+  //private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntake, mShooter);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -79,7 +80,7 @@ public class RobotContainer {
   public void configureTeleopBindings() {
     //mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
     mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));
-    mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
+    //mPilot.getAButtonObject().whileTrue(new Juke(mDrivetrainSubsystem));
     //mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
     //mPilot.getRightTriggerObject().onTrue(new ShooterCommand(mShooter, 999));
     //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
@@ -95,7 +96,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return null;
+
+    //return autoChooser.getSelected();
   }
 
   private static double deadband(double value, double deadband) {

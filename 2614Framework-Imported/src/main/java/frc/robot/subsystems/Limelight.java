@@ -40,7 +40,7 @@ public class Limelight extends SubsystemBase{
     }
 
     public double[] getTargetPoseCameraSpace(){
-        return table.getEntry("targetpose_cameraspace").getDou  bleArray(new double[6]);
+        return table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
     }
 
     public double[] getTargetPoseRobotSpace(){
