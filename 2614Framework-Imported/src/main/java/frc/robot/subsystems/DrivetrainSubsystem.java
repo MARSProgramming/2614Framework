@@ -26,6 +26,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -38,6 +39,12 @@ import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
+  private static DrivetrainSubsystem mInstance;
+  public static DrivetrainSubsystem getInstance(){
+        if(mInstance == null) mInstance = new DrivetrainSubsystem();
+        return mInstance;
+  }
+
   public static final double MAX_VOLTAGE = 12.0;
   private ProfiledPIDController mSnapController;
   //  The formula for calculating the theoretical maximum velocity is:
@@ -158,6 +165,10 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   @Config
   public void setPivot(boolean v){
         pivot = v;
+  }
+
+  public void addVisionMeasurement(Pose2d pose){
+        mPoseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp());
   }
 
   @Override
