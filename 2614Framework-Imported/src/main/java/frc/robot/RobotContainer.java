@@ -37,7 +37,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
   private final Intake mIntake = new Intake();
   private final Shooter mShooter = new Shooter();
-  private final Limelight mLimelight = new Limelight(new PhotonCamera("Limelight"));
+  private final Limelight mLimelight = new Limelight(); 
   
 
   ConstantsIO mConstantsIO = ConstantsIO.getInstance();
