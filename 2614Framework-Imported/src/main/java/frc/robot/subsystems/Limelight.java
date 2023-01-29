@@ -12,31 +12,41 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 public class Limelight extends SubsystemBase{
-    private static Limelight mLimelight;
     private NetworkTable table; 
     
     public Limelight(){ 
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
     }
     
-    public Double[] getCameraPoseTargetSpace(){
-        return table.getEntry("camerapose_targetspace").getDoubleArray(new Double[6]);
+    public double[] getCameraPoseTargetSpace(){
+        return table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
     }
 
-    public Double[] getTargetPoseCameraSpace(){
-        return table.getEntry("targetpose_cameraspace").getDoubleArray(new Double[6]);
+    public double[] getTargetPoseCameraSpace(){
+        return table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
     }
 
-    public Double[] getTargetPoseRobotSpace(){
-        return table.getEntry("targetpose_robotspace").getDoubleArray(new Double[6]); 
+    public double[] getTargetPoseRobotSpace(){
+        return table.getEntry("targetpose_robotspace").getDoubleArray(new double[6]); 
     }
     
-    public Double[] getRobotPoseTargetSpace(){
-        return table.getEntry("botpose_targetspace").getDoubleArray(new Double[6]); 
+    public double[] getRobotPoseTargetSpace(){
+        return table.getEntry("botpose_targetspace").getDoubleArray(new double[6]); 
     }
 
     public NetworkTableEntry getTargetID(){
         return table.getEntry("tid");  
     }
 
+    public double[] getBotPose(){ 
+        return table.getEntry("botpose").getDoubleArray(new double[6]);
+    }
+
+    public double[] getBotPoseRed(){ 
+        return table.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+    }
+    
+    public double[] getBotPoseBlue(){ 
+        return table.getEntry("botpose_wpiblue").getDoubleArray(new double[6]); 
+    }
 }
