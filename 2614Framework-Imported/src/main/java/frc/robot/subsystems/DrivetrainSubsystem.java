@@ -143,14 +143,13 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
         new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration")));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
     mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(m_pigeon.getYaw()), getSwerveModulePositions(), new Pose2d());
-    
   }
   /**
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
    */
-  public void zeroGyroscope() {
-    m_pigeon.setYaw(0);
+  public void zeroGyroscope(double d) {
+    m_pigeon.setYaw(d);
     System.out.print("Zeroed!");
   }
   public Rotation2d getGyroscopeRotation() {
@@ -184,7 +183,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
     SmartDashboard.putNumber("X", this.getPose().getX());
     SmartDashboard.putNumber("Y", this.getPose().getY());
     SmartDashboard.putNumber("rot", this.getPose().getRotation().getDegrees());
-    SmartDashboard.putNumber("pigeon", this.getPigeonAngle());
+    SmartDashboard.putNumber("pigeon", Math.toDegrees(this.getPigeonAngle()));
 }
   public Pose2d getPose(){
     return mPoseEstimator.getEstimatedPosition();

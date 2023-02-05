@@ -22,14 +22,14 @@ public class DriveAtPath extends CommandBase {
     private Rotation2d mEndRotation;
     private double timeout;
 
-    public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, Rotation2d rotation, double timeout) {
+    public DriveAtPath(DrivetrainSubsystem subsystem, Trajectory traj, double rotation, double timeout) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
         mController = new HolonomicDriveController(new PIDController(Constants.DoubleAutoConstants.get("holonomicXkP"), Constants.DoubleAutoConstants.get("holonomicXkI"), Constants.DoubleAutoConstants.get("holonomicXkD")), new PIDController(Constants.DoubleAutoConstants.get("holonomicYkP"), Constants.DoubleAutoConstants.get("holonomicYkI"), Constants.DoubleAutoConstants.get("holonomicYkD")), new ProfiledPIDController(Constants.DoubleAutoConstants.get("holonomicOkP"), Constants.DoubleAutoConstants.get("holonomicOkI"), Constants.DoubleAutoConstants.get("holonomicOkD"), new TrapezoidProfile.Constraints(Constants.DoubleAutoConstants.get("holonomicOMaxVelocity"), Constants.DoubleAutoConstants.get("holonomicOMaxAcceleration"))));
         mTimer = new Timer();
-        mEndRotation = rotation;
+        mEndRotation = new Rotation2d(Math.toRadians(rotation));
         this.timeout = timeout;
-        mController.setTolerance(new Pose2d(0.01, 0.01, new Rotation2d(0.01)));
+        mController.setTolerance(new Pose2d(0.3, 0.3, new Rotation2d(0.3)));
         
         addRequirements(subsystem);
     }
@@ -43,10 +43,12 @@ public class DriveAtPath extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mDrivetrainSubsystem.drive(mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()+0.5), mEndRotation));
-        SmartDashboard.putNumber("desiredX", mTrajectory.sample(mTimer.get() + 0.5).poseMeters.getX());
-        SmartDashboard.putNumber("desiredY", mTrajectory.sample(mTimer.get() + 0.5).poseMeters.getY());
-        SmartDashboard.putNumber("desiredrot", mTrajectory.sample(mTimer.get() + 0.5).poseMeters.getRotation().getDegrees());
+        mDrivetrainSubsystem.drive(mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()), mEndRotation));
+        SmartDashboard.putNumber("vx", mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()), mEndRotation).vxMetersPerSecond);
+        SmartDashboard.putNumber("vy", mController.calculate(mDrivetrainSubsystem.getPose(), mTrajectory.sample(mTimer.get()), mEndRotation).vyMetersPerSecond);
+        SmartDashboard.putNumber("desiredX", mTrajectory.sample(mTimer.get()).poseMeters.getX());
+        SmartDashboard.putNumber("desiredY", mTrajectory.sample(mTimer.get()).poseMeters.getY());
+        SmartDashboard.putNumber("desiredrot", mTrajectory.sample(mTimer.get()).poseMeters.getRotation().getDegrees());
     }
 
     // Called once the command ends or is interrupted.

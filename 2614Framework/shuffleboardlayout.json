@@ -18,8 +18,8 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/desiredX",
-              "_source1": "network_table:///SmartDashboard/X",
+              "_source0": "network_table:///SmartDashboard/X",
+              "_source1": "network_table:///SmartDashboard/desiredX",
               "_title": "desiredX",
               "_glyph": 148,
               "_showGlyph": false,
@@ -29,7 +29,8 @@
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
               "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/X": true
+              "Visible data/SmartDashboard/X": true,
+              "Visible data/SmartDashboard/desiredX": true
             }
           },
           "3,0": {
@@ -39,8 +40,8 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/desiredY",
-              "_source1": "network_table:///SmartDashboard/Y",
+              "_source0": "network_table:///SmartDashboard/Y",
+              "_source1": "network_table:///SmartDashboard/desiredY",
               "_title": "desiredY",
               "_glyph": 148,
               "_showGlyph": false,
@@ -50,67 +51,8 @@
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
               "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Y": true
-            }
-          },
-          "6,0": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/desiredrot",
-              "_source1": "network_table:///SmartDashboard/rot",
-              "_title": "desiredrot",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/rot": true
-            }
-          },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/speeds",
-              "_title": "speeds",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "9,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/psi",
-              "_title": "psi",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "9,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/current",
-              "_title": "current",
-              "_glyph": 148,
-              "_showGlyph": false
+              "Visible data/SmartDashboard/Y": true,
+              "Visible data/SmartDashboard/desiredY": true
             }
           },
           "0,3": {
@@ -176,6 +118,39 @@
               "_title": "desiredSnap",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/vx",
+              "_title": "vx",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/vy",
+              "_title": "vy",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Graph/Visible time": 30.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/vy": true
             }
           }
         }
@@ -309,9 +284,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.5,
-    "y": 0.0,
-    "width": 1440.0,
-    "height": 860.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }

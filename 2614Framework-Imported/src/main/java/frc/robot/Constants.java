@@ -98,15 +98,15 @@ public final class Constants {
         DoubleSnapConstants.put("kI", 0.0);
         DoubleSnapConstants.put("kD", 0.0);
 
-        DoubleAutoConstants.put("holonomicXkP", 1.0);
+        DoubleAutoConstants.put("holonomicXkP", 3.0);
         DoubleAutoConstants.put("holonomicXkI", 0);
-        DoubleAutoConstants.put("holonomicXkD", 0);
-        DoubleAutoConstants.put("holonomicYkP", 1.0);
+        DoubleAutoConstants.put("holonomicXkD", 0.0);
+        DoubleAutoConstants.put("holonomicYkP", 3.0);
         DoubleAutoConstants.put("holonomicYkI", 0);
-        DoubleAutoConstants.put("holonomicYkD", 0);
+        DoubleAutoConstants.put("holonomicYkD", 0.0);
         DoubleAutoConstants.put("holonomicOkP", 2.5);
         DoubleAutoConstants.put("holonomicOkI", 0.0);
-        DoubleAutoConstants.put("holonomicOkD", 0.0);
+        DoubleAutoConstants.put("holonomicOkD", 0);
         DoubleAutoConstants.put("holonomicOMaxVelocity",2);
         DoubleAutoConstants.put("holonomicOMaxAcceleration", 5);
 

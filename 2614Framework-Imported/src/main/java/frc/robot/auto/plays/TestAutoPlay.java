@@ -25,9 +25,9 @@ public class TestAutoPlay extends SequentialCommandGroup{
         addCommands(
             new ResetDrivePose(mDrivetrain, 1.93, 0.89, 0),
                 //endRotation is in radians
-            new DriveAtPath(mDrivetrain, part1, new Rotation2d(0.0), 5),
+            new DriveAtPath(mDrivetrain, part1, (0.0), 5),
             new ShooterCommand(mShooter, 3.0),
-            new DriveAtPath(mDrivetrain, part2, new Rotation2d(0.0), 5)
+            new DriveAtPath(mDrivetrain, part2, (0.0), 5)
         );
     }
 }
