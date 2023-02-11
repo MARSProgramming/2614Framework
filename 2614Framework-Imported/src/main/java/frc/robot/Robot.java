@@ -102,7 +102,12 @@ public class Robot extends TimedRobot {
     else{
       srx.set(ControlMode.PercentOutput, 0.0);
     }
+
+    if(m_robotContainer.getPilot().getAButtonPressed()){
+      m_robotContainer.getDriveTrain().updatePoseWithVision();
+    }
   }
+
 
   @Override
   public void testInit() {

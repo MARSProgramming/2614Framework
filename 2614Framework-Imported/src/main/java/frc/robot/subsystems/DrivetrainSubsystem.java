@@ -27,6 +27,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -36,10 +37,13 @@ import frc.robot.Constants;
 import frc.robot.commands.ZeroSwerves;
 import frc.robot.util.MoreMath;
 import io.github.oblarg.oblog.Loggable;
+import frc.robot.subsystems.Limelight; 
 
 public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public static final double MAX_VOLTAGE = 12.0;
   private ProfiledPIDController mSnapController;
+  private Limelight mLimelight = new Limelight(); 
+  private double[] limelightPose;
   //  The formula for calculating the theoretical maximum velocity is:
   //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
   //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
@@ -167,6 +171,9 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   }
   @Override
   public void periodic() {
+
+    limelightPose = mLimelight.getBotPose(); 
+
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
@@ -183,11 +190,17 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable{
   public Pose2d getPose(){
     return mPoseEstimator.getEstimatedPosition();
   }
+
   public void setPose(Pose2d pose, Rotation2d rotation){
    mPoseEstimator.resetPosition(rotation, getSwerveModulePositions(), pose);
   }
+
   public SwerveDriveKinematics getSwerveKinematics(){
         return m_kinematics;
+  }
+
+  public void updatePoseWithVision(){
+        mPoseEstimator.addVisionMeasurement(new Pose2d(new Translation2d(limelightPose[0], limelightPose[1]), new Rotation2d(limelightPose[3], limelightPose[4])), Timer.getFPGATimestamp());
   }
 
   public SwerveModulePosition[] getSwerveModulePositions(){
