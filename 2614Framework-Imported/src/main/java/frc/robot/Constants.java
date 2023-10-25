@@ -31,7 +31,7 @@ public final class Constants {
             public static final double MAX_SPEED_MULTIPLIER = 0.4; 
 
             public static final int DRIVETRAIN_PIGEON_ID = 31; 
-            public static final String kDriveCANivore = "Drivetrain";
+            public static final String kDriveCANivore = "rio";
 
                 
             public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 15; 
@@ -76,10 +76,5 @@ public final class Constants {
 
     public static class Controller{
         public static final double kTriggerThreshold = 0.6;
-    }
-
-    public static class Arm{
-        public static final int kElbowMotorID = -1;
-        public static final int kShoulderMotorID = -1;
     }
 }
