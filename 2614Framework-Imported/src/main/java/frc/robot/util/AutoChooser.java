@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.auto.plays.DoNothing;
-import frc.robot.auto.plays.TestAutoPlay;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class AutoChooser {
@@ -25,7 +24,6 @@ public class AutoChooser {
 
         //auto plays
         autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-        autoChooser.addOption("Test Play", new TestAutoPlay(mDrivetrainSubsystem));
         
         preMatch.add(autoChooser).withSize(2, 1).withPosition(0, 0);
     }

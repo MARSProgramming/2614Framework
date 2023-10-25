@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import io.github.oblarg.oblog.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,14 +34,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    Logger.configureLoggingAndConfig(m_robotContainer, false);
     //mCompressor.enableAnalog(100, 110);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    Logger.updateEntries();
     //SmartDashboard.putNumber("psi", mCompressor.getPressure());
     //SmartDashboard.putNumber("current", mCompressor.getCurrent());
   }
@@ -82,30 +79,13 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.configureTeleopBindings();
-    srx.setNeutralMode(NeutralMode.Brake);
-    srx2.setNeutralMode(NeutralMode.Brake);
-    srx2.follow(srx);
-    srx2.setInverted(true);
-    srx.setInverted(true);
   }
 
   //TalonFX thej = new TalonFX(14, "Drivetrain");
   /** This function is called periodically during operator control. */
-  TalonSRX srx = new TalonSRX(0);
-  TalonSRX srx2 = new TalonSRX(13);
   @Override
   public void teleopPeriodic() {
     //thej.set(ControlMode.PercentOutput, 0.5);
-    if(m_robotContainer.getPilot().getLeftTriggerAxis() > 0.2){
-      srx.set(ControlMode.PercentOutput, m_robotContainer.getPilot().getLeftTriggerAxis());
-    }
-    else{
-      srx.set(ControlMode.PercentOutput, 0.0);
-    }
-
-    if(m_robotContainer.getPilot().getAButtonPressed()){
-      m_robotContainer.getDriveTrain().updatePoseWithVision();
-    }
   }
 
 

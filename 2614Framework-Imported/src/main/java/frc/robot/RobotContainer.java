@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ZeroGyroscope;
 import frc.robot.commands.ZeroSwerves;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AutoChooser;
-import frc.robot.util.CustomXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,9 +32,8 @@ public class RobotContainer {
   
   private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
 
-  private final CustomXboxController mPilot = new CustomXboxController(0);
+  private final CommandXboxController mPilot = new CommandXboxController(0);
 
-  private HashMap<String, Pose2d> mPointPositionMap;
   private AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem);
 
   /**
@@ -57,8 +56,6 @@ public class RobotContainer {
     ));
     SmartDashboard.putData("Zero Swerves", new ZeroSwerves(mDrivetrainSubsystem).withTimeout(1).ignoringDisable(true));
     SmartDashboard.putData(CommandScheduler.getInstance());
-    mPointPositionMap = new HashMap<>();
-    mPointPositionMap.put("A", new Pose2d(0, 0, new Rotation2d(Math.toRadians(0.0))));
     configureTeleopBindings();
   }
 
@@ -69,10 +66,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureTeleopBindings() {
-    //mPilot.getYButtonObject().onTrue(new ResetDrivePose(mDrivetrainSubsystem, 0.0, 0.0, 0.0));
-    mPilot.getYButtonObject().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));    
-    //mPilot.getLeftTriggerObject().onTrue(new IntakeCommand(mIntake, 999));
-    //mPilot.getAButtonObject().whileActiveContinuous(new DriveAtPath(mDrivetrainSubsystem, new Trajectory(mPointPositionMap.get("A")), mPointPositionMap.get("A").getRotation()));
+    mPilot.y().onTrue(new ZeroGyroscope(mDrivetrainSubsystem));    
     System.out.println("Teleop Bindings Configured");
   }
 
@@ -112,13 +106,5 @@ public class RobotContainer {
     //value = Math.round(value * 5.0)/5.0;
 
     return value;
-  }
-
-  public XboxController getPilot(){
-    return mPilot;
-  }
-
-  public DrivetrainSubsystem getDriveTrain(){
-    return mDrivetrainSubsystem;
   }
 }

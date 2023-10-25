@@ -12,6 +12,6 @@ public class ZeroGyroscope extends CommandBase{
 
     @Override
     public void initialize(){
-        mDT.zeroGyroscope();
+        mDT.zeroGyroscope(0);
     }
 }
